@@ -1,7 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
-import { httpClient } from "http/client";
+import { httpClient } from "./http/client";
 import "./App.css";
 
 function App() {
@@ -11,9 +11,9 @@ function App() {
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
-    httpClient.get("/").then((response) => {
+    httpClient.get("/api/v1/memos").then((response) => {
       console.log(response);
-    }
+    });
   }
 
   return (

@@ -1,18 +1,29 @@
-import { fetch, FetchOptions, Response } from "@tauri-apps/api/http";
+import { fetch } from '@tauri-apps/plugin-http';
 
 class HttpClient {
-  private baseURL = 'http:'//locahost:5230;
+    private baseURL = 'http://localhost:5230';
 
-  async get<T>(url: string) {
-    return fetch<T>(this.baseURL + url, { method: 'GET' });
-  }
+    async get(url: string) {
+        const response = await fetch(this.baseURL + url, {
+            method: 'GET',
+            headers: {
+                Authorization:
+                    'Bearer  ' +
+                        'eyJhbGciOiJIUzI1NiIsImtpZCI6InYxIiwidHlwIjoiSldUIn0.eyJuYW1lIjoiIiwiaXNzIjoibWVtb3MiLCJzdWIiOiIxIiwiYXVkIjpbInVzZXIuYWNjZXNzLXRva2VuIl0sImV4cCI6MTc0MDYyNDQ0MSwiaWF0IjoxNzQwMDE5NjQxfQ.IA_VMdMU67i1xRVYUJcrkOOsyQGnF1T39CQuf2Y0G8c' ||
+                    ''
+            }
+        });
+        const jsonData = await response.json();
+        console.log(jsonData);
+        return jsonData;
+    }
 
-  async post<T>(url: string, data: any) {
-    return fetch<T>(this.baseURL + url, {
-      method: 'POST',
-      body: { type: 'Json', data }
-    });
-  }
+    async post(url: string, data: any) {
+        return fetch(this.baseURL + url, {
+            method: 'POST',
+            body: { type: 'Json', data }
+        });
+    }
 }
 
 export const httpClient = new HttpClient();
