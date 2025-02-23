@@ -2,6 +2,7 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/core";
 import { httpClient } from "./http/client";
+import DataBaseClient  from "./SQLite/client";
 import "./App.css";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     httpClient.get("/api/v1/memos").then((response) => {
       console.log(response);
     });
+    DataBaseClient.createTable();
   }
 
   return (
