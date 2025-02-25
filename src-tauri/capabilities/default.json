@@ -12,7 +12,10 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "http://localhost:5230/**"
+          "url":  "http://yupanel.site:*" 
+        },
+         {
+          "url":  "http://localhost:*" 
         }
       ],
       "deny": [
