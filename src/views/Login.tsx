@@ -2,6 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { httpClient } from "../http/client";
 import DataBaseClient  from "../SQLite/client";
+import LoginForm from "../components/LoginForm";
 function Login() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
@@ -16,26 +17,15 @@ function Login() {
   }
 
   return (
-    <main className="container">
-      <h1>Welcome to Tauri + React</h1>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
-    </main>
+    <div>
+      <h1>dd</h1>
+<div className="flex items-center justify-center h-screen bg-gray-100">
+      
+<LoginForm />
+    </div>
+    </div>
+    
+    
   );
 }
 
