@@ -18,9 +18,7 @@ function Login() {
 
   return (
     <div>
-      <h1>dd</h1>
-<div className="flex items-center justify-center h-screen bg-gray-100">
-      
+<div className="flex items-center justify-center h-screen bg-gray-100">      
 <LoginForm />
     </div>
     </div>
