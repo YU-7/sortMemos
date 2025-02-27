@@ -1,3 +1,13 @@
 {
-    "login": "登录B"
+    "LoginForm": {
+        "Login": "登录",
+        "Username": "用户名",
+        "Password": "密码",
+        "RememberMe": "记住我",
+        "Server": "服务器地址"
+    },
+    "CollapsibleSidebar": {
+        "Setting": "设置",
+        "Logout": "退出"
+    }
 }

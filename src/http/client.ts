@@ -17,13 +17,6 @@ class HttpClient {
         console.log(jsonData);
         return jsonData;
     }
-
-    async post(url: string, data: any) {
-        return fetch(this.baseURL + url, {
-            method: 'POST',
-            body: { type: 'Json', data }
-        });
-    }
 }
 
 export const httpClient = new HttpClient();
