@@ -1,5 +1,5 @@
+import { Outlet } from 'react-router-dom';
 import CollapsibleSidebar from '@/components/CollapsibleSidebar';
-import InfiniteCardList from '@/components/InfiniteCardList';
 import AuthRoute from '@/routes/AuthRoute';
 export default function Home() {
     return (
@@ -8,7 +8,7 @@ export default function Home() {
                 {/* 左侧导航栏 */}
                 <CollapsibleSidebar />
                 {/* 右侧内容区域 */}
-                <InfiniteCardList />
+                <Outlet />
             </div>
         </AuthRoute>
     );
