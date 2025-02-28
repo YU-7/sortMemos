@@ -9,9 +9,9 @@ import MDEditor from '@uiw/react-md-editor';
 export default function InfiniteCardList() {
     const [items, setItems] = useState(Array.from({ length: 7 })); // 初始加载10项占满高度
     const [hasMore, setHasMore] = useState(true);
-    const [showTopButton, setShowTopButton] = useState(false);
+    const [showTopButton, setShowTopButton] = useState(true);
     // 控制 Dialog 显示
-    const [isDialogOpen, setIsDialogOpen] = useState(true);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     // 存储当前选中卡片的数据
     const [selectedCardData, setSelectedCardData] = useState<{
         id: number;
@@ -29,13 +29,12 @@ export default function InfiniteCardList() {
 
     // 处理卡片点击
     const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        // 获取最近的 data-id 属性
-        const targetCard = (e.target as HTMLElement).closest('[data-id]');
+        // 根据className判断点击的是否是卡片
+        const targetCard = (e.target as HTMLElement).closest('.p-6.pt-0');
         if (!targetCard) return;
-
-        const cardId = targetCard.getAttribute('data-id');
-        const selectedCard = items.find((card) => card.id === cardId);
-        console.log('选中卡片数据:', selectedCard);
+        // const cardId = targetCard.getAttribute('key');
+        // const selectedCard = items.find((card) => card === cardId);
+        // console.log('选中卡片数据:', selectedCard);
         setIsDialogOpen(!isDialogOpen);
     };
 
@@ -79,29 +78,25 @@ export default function InfiniteCardList() {
                     </div>
                 </InfiniteScroll>
             </div>
-
             {/* 回到顶部按钮 */}
             {showTopButton && (
                 <Button
                     size="icon"
-                    className="fixed bottom-8 right-8 rounded-full shadow-lg"
+                    className="fixed bottom-3 right-3 rounded-full shadow-lg"
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                     <ArrowUp className="h-4 w-4" />
                 </Button>
             )}
-
             {/* 共用 Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>{selectedCardData?.title || '详细信息'}</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-4">
-                        <p>{selectedCardData?.content}</p>
-                        <p>卡片ID: {selectedCardData?.id}</p>
-                        <MDEditor.Markdown source={selectedCardData?.content || '**haha** b'} />
-                    </div>
+                    <MDEditor.Markdown
+                        source={selectedCardData?.content || '**haha** b**haha** b**haha** b\n1\n1\n1\n'}
+                    />
                 </DialogContent>
             </Dialog>
         </div>
