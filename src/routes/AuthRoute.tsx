@@ -2,15 +2,15 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { ReactNode } from 'react';
 import { UserRepository } from '@/SQLiteClient/UserRepository';
 
-// const repo = new UserRepository();
-// var a = await repo.vertifyUser(username);
-// console.log('登录标志2' + a);
-
-export default function AuthRoute({ children }: { children: ReactNode }) {
+var isLogined = false;
+async function vertifyUser(): Promise<boolean> {
     const location = useLocation();
     const { username, password } = location.state || {};
-    console.log('登1' + username);
-    // const isLogged =  await vertifyUser({ username, password });
-    // console.log('登录标志1' + isLogged);
-    return false ? children : <Navigate to="/" replace />;
+    const repo = new UserRepository();
+    var a = await repo.vertifyUser(username);
+    return a;
+}
+isLogined = await vertifyUser();
+export default function AuthRoute({ children }: { children: ReactNode }) {
+    return isLogined ? children : <Navigate to="/" replace />;
 }

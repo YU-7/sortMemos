@@ -31,13 +31,12 @@ export class UserRepository extends BaseRepository<User> {
     // 自定义查询方法
     async findByEmail(email: string): Promise<User | null> {
         const result = await this.find({ email }, ['created_at', 'DESC'], 1);
-        console.log(result[0]);
         return result[0] || null;
     }
 
     async vertifyUser(email: string): Promise<boolean> {
         const result = await this.find({ email }, ['created_at', 'DESC'], 1);
-        console.log(result[0]);
+        const close = await this.close();
         return true;
     }
 }
