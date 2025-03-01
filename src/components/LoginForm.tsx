@@ -3,14 +3,10 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
-    const navigate = useNavigate();
     const { t } = useTranslation();
-    function vertifyUser() {
-        navigate(`/home`);
-    }
     return (
         <div className="max-w-md w-full space-y-6 p-8 bg-card rounded-lg shadow-md">
             <div className="text-center">
@@ -39,8 +35,8 @@ export default function LoginForm() {
                         忘记密码？
                     </Button>
                 </div>
-                <Link to="/home">
-                    <Button className="w-full" type="submit" onClick={vertifyUser}>
+                <Link to="/home" state={{ username: '111', password: 'admin' }}>
+                    <Button className="w-full" type="submit">
                         登录
                     </Button>
                 </Link>
