@@ -36,7 +36,7 @@ export class UserRepository extends BaseRepository<User> {
 
     async vertifyUser(email: string): Promise<boolean> {
         const result = await this.find({ email }, ['created_at', 'DESC'], 1);
-        const close = await this.close();
-        return true;
+        // const close = await this.close();
+        return result[0] ? true : false;
     }
 }
