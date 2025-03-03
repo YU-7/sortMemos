@@ -21,8 +21,6 @@ export default function AuthRoute({ children }: { children: ReactNode }) {
         verifyLogin();
     }, []); // 空依赖数组：仅在组件挂载时执行一次
 
-    console.log(isLogined);
-    // isLogined = await vertifyUser();
     if (isLoading) {
         return <div>加载中...</div>; // 等待验证完成，先渲染Loading
     }

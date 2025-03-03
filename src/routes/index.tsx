@@ -12,6 +12,7 @@ export default function RoutesConfig() {
             {/* 受保护路由 */}
             <Route path="/home" element={<Home />}>
                 <Route index element={<InfiniteCardList />} />
+                <Route path="todolist" element={<InfiniteCardList />} />
                 <Route path="setting" element={<Setting />} />
             </Route>
         </Routes>

@@ -100,7 +100,7 @@ interface Resource {
     createTime?: string;
 }
 
-interface MemoData {
+export interface MemoData {
     name?: string;
     state?: StateType;
     creator?: string;

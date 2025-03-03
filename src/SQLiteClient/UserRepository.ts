@@ -11,17 +11,21 @@ export interface User {
 }
 
 export class UserRepository extends BaseRepository<User> {
-    protected tableName = 'users';
+    protected tableName = 'Users';
     protected migrations = [
-        `CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT NOT NULL UNIQUE,
-      email TEXT NOT NULL UNIQUE,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP,
-      deleted_at TIMESTAMP NULL
-    )`,
-        'CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)'
+        `CREATE TABLE IF NOT EXISTS Users (
+    name TEXT PRIMARY KEY,
+    role TEXT NOT NULL CHECK(role IN ('ROLE_UNSPECIFIED','HOST', 'ADMIN', 'USER')), 
+    username TEXT NOT NULL UNIQUE,
+    email TEXT,
+    nickname TEXT NOT NULL,
+    avatarUrl TEXT,
+    description TEXT,
+    password TEXT NOT NULL,
+    state TEXT NOT NULL CHECK(state IN ('STATE_UNSPECIFIED','NORMAL', 'ARCHIVED')),
+    createTime TEXT NOT NULL,
+    updateTime TEXT NOT NULL
+);`
     ];
 
     async createTable(): Promise<void> {
@@ -30,12 +34,12 @@ export class UserRepository extends BaseRepository<User> {
 
     // 自定义查询方法
     async findByEmail(email: string): Promise<User | null> {
-        const result = await this.find({ email }, ['created_at', 'DESC'], 1);
+        const result = await this.find({ email }, ['createTime', 'DESC'], 1);
         return result[0] || null;
     }
 
     async vertifyUser(email: string): Promise<boolean> {
-        const result = await this.find({ email }, ['created_at', 'DESC'], 1);
+        const result = await this.find({ email }, ['createTime', 'DESC'], 1);
         // const close = await this.close();
         return result[0] ? true : false;
     }

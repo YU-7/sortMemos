@@ -5,25 +5,27 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { ArrowUp, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
+import { getMemos } from '@/httpClient/memosService';
+import { MemoData } from '@/dataModel/memos';
 
 export default function InfiniteCardList() {
-    const [items, setItems] = useState(Array.from({ length: 7 })); // 初始加载10项占满高度
+    const [cardItems, setCardItems] = useState(Array.from({ length: 7 }));
     const [hasMore, setHasMore] = useState(true);
     const [showTopButton, setShowTopButton] = useState(true);
     // 控制 Dialog 显示
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     // 存储当前选中卡片的数据
-    const [selectedCardData, setSelectedCardData] = useState<{
-        id: number;
-        title: string;
-        content: string;
-    } | null>(null);
+    const [selectedCardData, setSelectedCardData] = useState<MemoData | null>(null);
 
     // 加载更多数据（模拟API调用）
     const fetchMoreData = () => {
         setTimeout(() => {
-            setItems((prev) => [...prev, ...Array.from({ length: 10 })]);
-            if (items.length >= 50) setHasMore(false);
+            getMemos().then((res) => {
+                console.log(res.memos);
+                setCardItems((prev) => [...prev, ...res.memos]);
+                console.log('当前数据:', cardItems);
+                if (cardItems.length >= 30) setHasMore(false);
+            });
         }, 1500);
     };
 
@@ -32,9 +34,9 @@ export default function InfiniteCardList() {
         // 根据className判断点击的是否是卡片
         const targetCard = (e.target as HTMLElement).closest('.p-6.pt-0');
         if (!targetCard) return;
-        // const cardId = targetCard.getAttribute('key');
-        // const selectedCard = items.find((card) => card === cardId);
-        // console.log('选中卡片数据:', selectedCard);
+        const cardId = targetCard.getElementsByClassName('.p-6.pt-0');
+        const selectedCard = cardItems.find((card) => card === cardId);
+        console.log('选中卡片数据:', cardId);
         setIsDialogOpen(!isDialogOpen);
     };
 
@@ -52,7 +54,7 @@ export default function InfiniteCardList() {
             {/* 无限滚动区域 */}
             <div id="scrollableDiv" className="h-full overflow-y-auto">
                 <InfiniteScroll
-                    dataLength={items.length}
+                    dataLength={cardItems.length}
                     next={fetchMoreData}
                     hasMore={hasMore}
                     loader={
@@ -64,15 +66,12 @@ export default function InfiniteCardList() {
                     endMessage={<p className="text-center text-muted-foreground py-4">没有更多内容了</p>}
                 >
                     <div className="space-y-4 p-4">
-                        {items.map((_, index) => (
+                        {cardItems.map((item: any, index) => (
                             <Card key={index}>
                                 <CardHeader>
-                                    <CardTitle>卡片 #{index + 1}</CardTitle>
+                                    <CardTitle>TODO #{index + 1}</CardTitle>
                                 </CardHeader>
-                                <CardContent>
-                                    无限滚动内容示例 - 当前总数: {items.length}
-                                    \n ceshi \n ceshi \n ceshi \n ceshi \n ceshi \n ceshi
-                                </CardContent>
+                                <CardContent>{item?.content}</CardContent>
                             </Card>
                         ))}
                     </div>
@@ -92,7 +91,7 @@ export default function InfiniteCardList() {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>{selectedCardData?.title || '详细信息'}</DialogTitle>
+                        <DialogTitle>{selectedCardData?.content || '详细信息'}</DialogTitle>
                     </DialogHeader>
                     <MDEditor.Markdown
                         source={selectedCardData?.content || '**haha** b**haha** b**haha** b\n1\n1\n1\n'}
