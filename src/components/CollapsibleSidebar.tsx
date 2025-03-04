@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ChevronLeft, ChevronRight, Search, Home, Bookmark, Settings } from 'lucide-react';
-import { url } from 'inspector';
+import { ChevronLeft, ChevronRight, Home, Bookmark, Settings } from 'lucide-react';
 
 export default function CollapsibleSidebar() {
     const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const navWidth = isCollapsed ? 'w-16' : 'w-64';
+    const navWidth = isCollapsed ? 'w-16' : 'w-36';
     function navTo(url: string) {
         navigate(`/home/${url}`);
     }
@@ -34,17 +32,6 @@ export default function CollapsibleSidebar() {
                     >
                         {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
                     </Button>
-
-                    {/* 搜索区域（折叠时隐藏文字） */}
-                    <div className="flex gap-2 mb-6">
-                        <Input
-                            placeholder={isCollapsed ? '' : '搜索...'}
-                            className={`transition-all ${isCollapsed ? 'w-0 px-0' : 'flex-1'}`}
-                        />
-                        <Button size="icon">
-                            <Search className="h-4 w-4" />
-                        </Button>
-                    </div>
 
                     {/* 导航菜单项 */}
                     <nav className="space-y-2 flex-1">

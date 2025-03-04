@@ -46,7 +46,7 @@ export default function InfiniteCardList() {
     }, []);
 
     return (
-        <div className="flex-1 p-8 overflow-y-auto" onClick={handleCardClick}>
+        <div className="basis-4/5 bg-blue-100 p-4" onClick={handleCardClick}>
             {/* 无限滚动区域 */}
             <div id="scrollableDiv" className="h-full overflow-y-auto">
                 <InfiniteScroll
