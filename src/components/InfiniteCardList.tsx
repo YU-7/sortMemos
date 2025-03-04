@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -6,9 +7,11 @@ import { ArrowUp, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { getMemosPage } from '@/httpClient/memosService';
-import { MemoData } from '@/dataModel/memos';
 
-export default function InfiniteCardList() {
+interface InfiniteCardListProps {
+    className?: string;
+}
+const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
     const [cardItems, setCardItems] = useState(Array.from({ length: 7 }));
     const [hasMore, setHasMore] = useState(true);
     const [showTopButton, setShowTopButton] = useState(true);
@@ -46,7 +49,7 @@ export default function InfiniteCardList() {
     }, []);
 
     return (
-        <div className="basis-4/5 bg-blue-100 p-4" onClick={handleCardClick}>
+        <div className={cn('basis-2/5 bg-blue-100 p-4', className)} onClick={handleCardClick}>
             {/* 无限滚动区域 */}
             <div id="scrollableDiv" className="h-full overflow-y-auto">
                 <InfiniteScroll
@@ -96,4 +99,6 @@ export default function InfiniteCardList() {
             </Dialog>
         </div>
     );
-}
+};
+
+export default InfiniteCardList;
