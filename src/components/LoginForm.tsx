@@ -4,11 +4,18 @@ import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
-export default function LoginForm() {
+interface LoginFormProps {
+    className?: string;
+    onUpdateParent: (value: boolean) => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ className, onUpdateParent }) => {
     const { t } = useTranslation();
+
     return (
-        <div className="max-w-md w-full space-y-6 p-8 bg-card rounded-lg shadow-md">
+        <div className={cn('max-w-md w-full space-y-6 p-8 bg-card rounded-lg shadow-md', className)}>
             <div className="text-center">
                 <h1 className="text-2xl font-bold">用户登录</h1>
                 <p className="text-muted-foreground mt-2">输入邮箱和密码以继续</p>
@@ -31,8 +38,8 @@ export default function LoginForm() {
                         <Checkbox id="remember" />
                         <Label htmlFor="remember">记住我</Label>
                     </div>
-                    <Button variant="link" className="px-0 text-sm">
-                        忘记密码？
+                    <Button variant="link" className="px-0 text-sm" onClick={() => onUpdateParent(true)}>
+                        使用token来登录
                     </Button>
                 </div>
                 <Link to="/home" state={{ username: '111', password: 'admin' }}>
@@ -43,4 +50,5 @@ export default function LoginForm() {
             </form>
         </div>
     );
-}
+};
+export default LoginForm;
