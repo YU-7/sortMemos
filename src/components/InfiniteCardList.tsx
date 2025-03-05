@@ -3,22 +3,27 @@ import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowUp, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { getMemosPage } from '@/httpClient/memosService';
+import { MemosList } from '@/dataInterface/memos';
 
 interface InfiniteCardListProps {
     className?: string;
+    title?: string;
+    getUrl?: string;
 }
 const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
-    const [cardItems, setCardItems] = useState(Array.from({ length: 7 }));
+    const [isLoading, setIsLoading] = useState(true); // 添加加载状态
+    const [cardItems, setCardItems] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    const [showTopButton, setShowTopButton] = useState(true);
+    const [showTopButton, setShowTopButton] = useState(false);
     // 控制 Dialog 显示
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     // 存储当前选中卡片的数据
-    const [selectedCardData, setSelectedCardData] = useState('');
+    const [selectedCardData, setSelectedCardData] = useState();
 
     // 加载更多数据（模拟API调用）
     const fetchMoreData = () => {
@@ -33,12 +38,22 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
     // 处理卡片点击
     const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
         // 根据className判断点击的是否是卡片
-        const targetCard = (e.target as HTMLElement).closest('.p-6.pt-0');
+        const targetCard = (e.target as HTMLElement).closest('.rounded-xl.border.bg-card.text-card-foreground.shadow');
         if (!targetCard) return;
-        setSelectedCardData(targetCard.innerHTML);
-        setIsDialogOpen(!isDialogOpen);
+        if (targetCard.id) {
+            const id = parseInt(targetCard.id);
+            // console.log(cardItems[id].content);
+            // setSelectedCardData();
+            setIsDialogOpen(!isDialogOpen);
+        }
     };
-
+    useEffect(() => {
+        const verifyLogin = async () => {
+            fetchMoreData();
+            setIsLoading(false); // 结束加载
+        };
+        verifyLogin();
+    }, []); // 空依赖数组：仅在组件挂载时执行一次
     // 滚动监听
     useEffect(() => {
         const handleScroll = () => {
@@ -48,6 +63,9 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    if (isLoading) {
+        return <Skeleton className={cn('basis-2/5 bg-blue-100 p-4', className)}>wait</Skeleton>;
+    }
     return (
         <div className={cn('basis-2/5 bg-blue-100 p-4', className)} onClick={handleCardClick}>
             {/* 无限滚动区域 */}
@@ -66,7 +84,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
                 >
                     <div className="space-y-4 p-4">
                         {cardItems.map((item: any, index) => (
-                            <Card key={index}>
+                            <Card key={index} id={index.toString()}>
                                 <CardHeader>
                                     <CardTitle>TODO #{index + 1}</CardTitle>
                                 </CardHeader>

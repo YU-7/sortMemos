@@ -12,7 +12,8 @@ class HttpClient {
                     ''
             }
         });
-        return await response.json();
+        const dataJson = await response.json();
+        return dataJson;
     }
 
     async patchByToken(url: string) {

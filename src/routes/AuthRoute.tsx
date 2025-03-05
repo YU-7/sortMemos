@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { ReactNode, useState, useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { UserRepository } from '@/SQLiteClient/UserRepository';
 
 export default function AuthRoute({ children }: { children: ReactNode }) {
@@ -22,8 +23,9 @@ export default function AuthRoute({ children }: { children: ReactNode }) {
     }, []); // 空依赖数组：仅在组件挂载时执行一次
 
     if (isLoading) {
-        return <div>加载中...</div>; // 等待验证完成，先渲染Loading
-    }
+        return <Skeleton className="h-8" />;
+    } // 等待验证完成，先渲染Loading
+
     // 等到验证完成，再根据结果重新渲染内容
     return isLogined ? children : <Navigate to="/" replace />;
 }
