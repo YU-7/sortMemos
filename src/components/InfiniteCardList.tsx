@@ -8,7 +8,7 @@ import { ArrowUp, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { getMemosPage } from '@/httpClient/memosService';
-import { MemosList } from '@/dataInterface/memos';
+import { Apiv1Memo } from '@/dataInterface/memosRes';
 
 interface InfiniteCardListProps {
     className?: string;
@@ -17,20 +17,29 @@ interface InfiniteCardListProps {
 }
 const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
-    const [cardItems, setCardItems] = useState([]);
+    const [cardItems, setCardItems] = useState<Apiv1Memo[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [showTopButton, setShowTopButton] = useState(false);
-    // 控制 Dialog 显示
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
     // 存储当前选中卡片的数据
-    const [selectedCardData, setSelectedCardData] = useState();
+    const [selectedCardData, setSelectedCardData] = useState<String>();
+
+    const closeDialog = () => {
+        setCardItems((prev) => {
+            const curr = prev;
+            curr[currentCardIndex].content = selectedCardData?.toString();
+            return curr;
+        });
+        setIsDialogOpen(false);
+    };
 
     // 加载更多数据（模拟API调用）
     const fetchMoreData = () => {
         setTimeout(() => {
             getMemosPage().then((res) => {
                 setCardItems((prev) => [...prev, ...res.memos]);
-                if (cardItems.length >= 30) setHasMore(false);
+                if (!res.nextPageToken) setHasMore(false);
             });
         }, 1500);
     };
@@ -42,17 +51,17 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
         if (!targetCard) return;
         if (targetCard.id) {
             const id = parseInt(targetCard.id);
-            // console.log(cardItems[id].content);
-            // setSelectedCardData();
+            setCurrentCardIndex(id);
+            setSelectedCardData(cardItems[id].content);
             setIsDialogOpen(!isDialogOpen);
         }
     };
     useEffect(() => {
-        const verifyLogin = async () => {
+        const initData = async () => {
             fetchMoreData();
             setIsLoading(false); // 结束加载
         };
-        verifyLogin();
+        initData();
     }, []); // 空依赖数组：仅在组件挂载时执行一次
     // 滚动监听
     useEffect(() => {
@@ -64,14 +73,14 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
     }, []);
 
     if (isLoading) {
-        return <Skeleton className={cn('basis-2/5 bg-blue-100 p-4', className)}>wait</Skeleton>;
+        return <Skeleton className={cn('basis-2/5 p-4', className)}>wait</Skeleton>;
     }
     return (
-        <div className={cn('basis-2/5 bg-blue-100 p-4', className)} onClick={handleCardClick}>
+        <div className={cn('basis-2/5 p-4', className)} onClick={handleCardClick}>
             {/* 无限滚动区域 */}
             <div id="scrollableDiv" className="h-full overflow-y-auto">
                 <InfiniteScroll
-                    dataLength={cardItems.length}
+                    dataLength={cardItems?.length || 0}
                     next={fetchMoreData}
                     hasMore={hasMore}
                     loader={
@@ -83,7 +92,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
                     endMessage={<p className="text-center text-muted-foreground py-4">没有更多内容了</p>}
                 >
                     <div className="space-y-4 p-4">
-                        {cardItems.map((item: any, index) => (
+                        {cardItems?.map((item: any, index) => (
                             <Card key={index} id={index.toString()}>
                                 <CardHeader>
                                     <CardTitle>TODO #{index + 1}</CardTitle>
@@ -107,12 +116,17 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
                 </Button>
             )}
             {/* 共用 Dialog */}
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
                 <DialogContent className="max-w-4xl w-[80%] h-[80vh]">
                     <DialogHeader>
-                        <DialogTitle>'详细信息'</DialogTitle>
+                        <DialogTitle>详细信息</DialogTitle>
                     </DialogHeader>
-                    <MDEditor value={selectedCardData} preview="edit" height="70vh" />
+                    <MDEditor
+                        value={selectedCardData?.toString()}
+                        onChange={setSelectedCardData}
+                        preview="edit"
+                        height="70vh"
+                    />
                 </DialogContent>
             </Dialog>
         </div>

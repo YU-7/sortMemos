@@ -5,18 +5,16 @@ function TodoList() {
     const [isExpanded, setIsExpanded] = useState(false);
     return (
         <div className="flex-1 p-3 overflow-y-auto">
-            <div className="h-[10%] bg-blue-100 flex items-center justify-center">搜索框</div>
+            <div className="h-[10%] flex items-center bg-blue-100 justify-center">搜索框</div>
             <div className="h-[90%] flex flex-row relative">
                 {' '}
                 {/* 添加 relative 定位 */}
                 {/* 左侧可折叠区域 */}
-                <div
-                    className={`bg-gray-100 transition-all duration-300 ${
-                        isExpanded ? 'basis-1/2 min-w-0' : 'basis-0'
-                    }`}
-                >
-                    {isExpanded && <InfiniteCardList className="min-w-0 h-full overflow-hidden" />}
-                </div>
+                {isExpanded && (
+                    <InfiniteCardList
+                        className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-0'}`}
+                    />
+                )}
                 {/* 折叠按钮（带悬停动画） */}
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
@@ -39,9 +37,7 @@ function TodoList() {
                 </button>
                 {/* 右侧主内容区 */}
                 <InfiniteCardList
-                    className={`bg-blue-100 transition-all duration-300 ${
-                        isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'
-                    }`}
+                    className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'}`}
                 />
             </div>
         </div>

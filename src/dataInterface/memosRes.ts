@@ -1,7 +1,20 @@
 /**
- * apiv1Memo
+ * v1ListMemosResponse
  */
 export interface Response {
+    memos?: Apiv1Memo[];
+    /**
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     */
+    nextPageToken?: string;
+    [property: string]: any;
+}
+
+/**
+ * apiv1Memo
+ */
+export interface Apiv1Memo {
     content?: string;
     createTime?: Date;
     /**
