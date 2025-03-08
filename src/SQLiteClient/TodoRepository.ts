@@ -31,8 +31,8 @@ export class todoRepository extends BaseRepository<todo> {
     }
 
     // 自定义查询方法
-    async findTodoList(createTime: number, page: number, pageSize: number): Promise<todo[] | null> {
-        const result = await this.find({ createTime }, ['createTime', 'DESC'], page, pageSize);
+    async findTodoList(todo: todo, page: number, pageSize: number): Promise<todo[] | null> {
+        const result = await this.find(todo, ['createTime', 'DESC'], page, pageSize);
         return result || null;
     }
 

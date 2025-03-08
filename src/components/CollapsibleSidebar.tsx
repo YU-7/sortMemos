@@ -14,8 +14,9 @@ export default function CollapsibleSidebar() {
     // 导航项配置
     const navItems = [
         { icon: Home, label: 'TODO', url: 'todolist' },
-        { icon: Bookmark, label: '收藏夹', url: 'setting' },
-        { icon: Settings, label: '设置', url: 'setting' }
+        { icon: Bookmark, label: '模板记', url: 'setting' },
+        { icon: Settings, label: '频次记录', url: 'setting' },
+        { icon: Settings, label: '软件设置', url: 'setting' }
     ];
 
     return (
