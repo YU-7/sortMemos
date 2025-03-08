@@ -38,8 +38,8 @@ export class UserRepository extends BaseRepository<User> {
         return result[0] || null;
     }
 
-    async vertifyUser(email: string): Promise<boolean> {
-        const result = await this.find({ email }, ['createTime', 'DESC'], 1);
+    async vertifyUser(email: string, password: string): Promise<boolean> {
+        const result = await this.find({ email, password }, ['createTime', 'DESC'], 1);
         // const close = await this.close();
         return result[0] ? true : false;
     }

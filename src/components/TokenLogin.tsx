@@ -1,8 +1,6 @@
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface LoginFormProps {
@@ -11,8 +9,6 @@ interface LoginFormProps {
 }
 
 const TokenLogin: React.FC<LoginFormProps> = ({ className, onUpdateParent }) => {
-    const { t } = useTranslation();
-
     return (
         <div className={cn('flex items-center max-w-md w-full  bg-card rounded-lg shadow-md', className)}>
             {/* Label 标签 */}

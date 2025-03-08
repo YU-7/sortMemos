@@ -17,7 +17,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
      * 动态条件查询
      *
      */
-    async find(where?: WhereClause, orderBy?: OrderBy, limit?: number): Promise<T[]> {
+    async find(where?: WhereClause, orderBy?: OrderBy, page?: number, pageSize?: number): Promise<T[]> {
         let sql = `SELECT * FROM ${this.tableName}`;
         const params: any[] = [];
 
@@ -34,9 +34,10 @@ export abstract class BaseRepository<T> extends BaseDatabase {
         if (orderBy) {
             sql += ` ORDER BY ${orderBy[0]} ${orderBy[1]}`;
         }
-
-        if (limit) {
-            sql += ` LIMIT ${limit}`;
+        if (page && pageSize) {
+            const offset = (page - 1) * pageSize;
+            const limit = pageSize;
+            sql += ` LIMIT ${limit} OFFSET ${offset}`;
         }
 
         const result = (await this.select(sql, params)) as T[];
@@ -59,6 +60,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
                 WHERE ${whereClause}`;
 
         const params = [...Object.values(data), ...Object.values(where)];
+        console.log(sql, params);
         const result = await this.execute(sql, params);
         return result.rowsAffected;
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,39 +7,59 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowUp, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
-import { getMemosPage } from '@/httpClient/memosService';
-import { Apiv1Memo } from '@/dataInterface/memosRes';
-
+import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
 interface InfiniteCardListProps {
     className?: string;
     title?: string;
     getUrl?: string;
 }
+interface ModifiedCards {
+    index: number;
+    data: string;
+}
 const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
+    const todolist = new todoRepository();
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
-    const [cardItems, setCardItems] = useState<Apiv1Memo[]>([]);
+    const [cardItems, setCardItems] = useState<todo[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [showTopButton, setShowTopButton] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
     // 存储当前选中卡片的数据
     const [selectedCardData, setSelectedCardData] = useState<String>();
+    // 记录当前修改过的卡片的索引
+    const modifiedCardIndexRef = useRef<ModifiedCards[]>([]);
 
     const closeDialog = () => {
         setCardItems((prev) => {
             const curr = prev;
-            curr[currentCardIndex].content = selectedCardData?.toString();
+            curr[currentCardIndex - 1].content = selectedCardData?.toString();
             return curr;
         });
+        modifiedCardIndexRef.current.push({ index: currentCardIndex, data: selectedCardData?.toString() || '' });
         setIsDialogOpen(false);
     };
+    // 在组件卸载时，把修改过的卡片数据保存到数据库
+    useEffect(() => {
+        // 仅在组件卸载时执行的清理函数
+        return () => {
+            modifiedCardIndexRef.current.map(({ index, data }) => {
+                return todolist.updateTodoList(index, { content: data });
+            });
 
-    // 加载更多数据（模拟API调用）
+            // 等待所有更新操作完成
+        };
+    }, []); // 空依赖数组确保只在挂载和卸载时执行
+
+    // 加载更多数据
     const fetchMoreData = () => {
         setTimeout(() => {
-            getMemosPage().then((res) => {
-                setCardItems((prev) => [...prev, ...res.memos]);
-                if (!res.nextPageToken) setHasMore(false);
+            todolist.findTodoList(111, 1, 15).then((res) => {
+                const newItems = res ? (Array.isArray(res) ? res : [res]) : [];
+                setCardItems((prev) => [...prev, ...newItems]);
+                if (newItems?.length < 15) {
+                    setHasMore(false);
+                }
             });
         }, 1500);
     };
@@ -52,7 +72,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
         if (targetCard.id) {
             const id = parseInt(targetCard.id);
             setCurrentCardIndex(id);
-            setSelectedCardData(cardItems[id].content);
+            setSelectedCardData(cardItems[id - 1].content);
             setIsDialogOpen(!isDialogOpen);
         }
     };
@@ -93,9 +113,9 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className }) => {
                 >
                     <div className="space-y-4 p-4">
                         {cardItems?.map((item: any, index) => (
-                            <Card key={index} id={index.toString()}>
+                            <Card key={index} id={item.TODO_ID}>
                                 <CardHeader>
-                                    <CardTitle>TODO #{index + 1}</CardTitle>
+                                    <CardTitle>TODO #{item.TODO_ID}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <MDEditor.Markdown source={item?.content} />

@@ -4,16 +4,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { UserRepository } from '@/SQLiteClient/UserRepository';
 
 export default function AuthRoute({ children }: { children: ReactNode }) {
+    const location = useLocation();
+    const { email, password } = location.state || {};
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
     const [isLogined, setIsLogined] = useState(false);
     useEffect(() => {
         const verifyLogin = async () => {
             try {
                 const repo = new UserRepository();
-                const isValid = await repo.vertifyUser('111'); // 调用异步验证
+                const isValid = await repo.vertifyUser(email, password); // 调用异步验证
                 setIsLogined(isValid);
             } catch (error) {
-                console.error('验证失败:', error);
                 setIsLogined(false);
             } finally {
                 setIsLoading(false); // 结束加载
