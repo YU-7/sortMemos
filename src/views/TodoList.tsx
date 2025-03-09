@@ -4,25 +4,33 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { todo } from '@/SQLiteClient/TodoRepository';
+import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 function TodoList() {
     // 在组件顶部添加状态管理
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [newTodo, setNewTodo] = useState<string>();
     const newTodoRef = useRef<todo>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    function addNewTodo() {
-        newTodoRef.current = {
-            TODO_ID: 0,
-            content: newTodo,
-            isToday: false
-        };
-        setIsDialogOpen(false);
+    async function addNewTodo() {
+        const lastTodo = new todoRepository();
+        const updateData = { content: newTodo, isToday: false, createTime: new Date() };
+        try {
+            const lastID = await lastTodo.addTodo(updateData);
+            newTodoRef.current = {
+                TODO_ID: lastID || 0,
+                content: newTodo,
+                isToday: false
+            };
+            setIsDialogOpen(false);
+        } catch (err) {
+            console.error('添加待办事项时出错:', err);
+        }
     }
     return (
         <div className="flex-1 p-3 overflow-y-auto">
@@ -80,7 +88,11 @@ function TodoList() {
                 <DialogContent className="max-w-4xl w-[80%] h-[80vh]">
                     <DialogHeader className="flex flex-row justify-between items-center">
                         <DialogTitle>新增TODO</DialogTitle>
-                        <Button onClick={addNewTodo} className="ml-2">
+                        <Button
+                            onClick={addNewTodo}
+                            disabled={!newTodo?.trim()}
+                            className={`ml-2 ${!newTodo?.trim() ? 'bg-gray-300' : ''}`}
+                        >
                             确定
                         </Button>
                     </DialogHeader>

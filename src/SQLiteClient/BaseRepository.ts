@@ -84,4 +84,22 @@ export abstract class BaseRepository<T> extends BaseDatabase {
         const result = await this.execute(sql, params);
         return result.rowsAffected;
     }
+
+    /**
+     * 创建新记录（返回插入ID）
+     */
+    async add(data: Omit<T, 'TODO_ID'>): Promise<number> {
+        const columns = Object.keys(data).join(', ');
+        const placeholders = Object.keys(data)
+            .map(() => '?')
+            .join(', ');
+
+        const sql = `INSERT INTO ${this.tableName} (${columns}) 
+                   VALUES (${placeholders})`;
+        const params = Object.values(data);
+
+        const result = await this.execute(sql, params);
+        console.log(sql, params);
+        return result.lastInsertId || 0;
+    }
 }

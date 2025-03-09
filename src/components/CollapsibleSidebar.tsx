@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home, Bookmark, Settings } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 export default function CollapsibleSidebar() {
     const navigate = useNavigate();
@@ -9,6 +10,9 @@ export default function CollapsibleSidebar() {
     const navWidth = isCollapsed ? 'w-16' : 'w-36';
     function navTo(url: string) {
         navigate(`/home/${url}`);
+    }
+    function loginOut() {
+        navigate('/');
     }
 
     // 导航项配置
@@ -21,8 +25,7 @@ export default function CollapsibleSidebar() {
 
     return (
         <div className="flex h-screen bg-background">
-            {/* 可收缩导航栏 */}
-            <aside className={`${navWidth} transition-all duration-300 border-r p-4`}>
+            <aside className={`${navWidth} transition-all duration-300 border-r p-4 flex flex-col`}>
                 <div className="flex flex-col h-full">
                     {/* 收缩按钮 */}
                     <Button
@@ -49,6 +52,16 @@ export default function CollapsibleSidebar() {
                         ))}
                     </nav>
                 </div>
+
+                {/* 底部登出按钮 */}
+                <Button
+                    variant="ghost"
+                    className={`mt-auto w-full justify-start gap-3 ${isCollapsed ? 'px-2' : 'px-4'}`}
+                    onClick={loginOut}
+                >
+                    <LogOut className="h-4 w-4 shrink-0" />
+                    <span className={`${isCollapsed ? 'hidden' : 'block'}`}>退出登录</span>
+                </Button>
             </aside>
         </div>
     );

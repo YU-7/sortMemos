@@ -3,12 +3,14 @@ import Login from '../views/Login';
 import Home from '../views/Home';
 import TodoList from '@/views/TodoList';
 import Setting from '@/views/Setting';
+import RegistryRoute from './RegistryRoute';
 
 export default function RoutesConfig() {
     return (
         <Routes>
             {/* 公共路由 */}
             <Route path="/" element={<Login />} />
+            <Route path="/registry" element={<RegistryRoute />} />
             {/* 受保护路由 */}
             <Route path="/home" element={<Home />}>
                 <Route index element={<TodoList />} />

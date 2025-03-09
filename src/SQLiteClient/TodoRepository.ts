@@ -40,4 +40,8 @@ export class todoRepository extends BaseRepository<todo> {
         const result = await this.update(todo, { TODO_ID });
         return result || null;
     }
+    async addTodo(todo: todo): Promise<number | null> {
+        const result = await this.add(todo);
+        return result || null;
+    }
 }
