@@ -8,15 +8,16 @@ import { useRef } from 'react';
 
 interface LoginFormProps {
     className?: string;
-    onUpdateParent: (value: boolean) => void;
 }
-const LoginForm: React.FC<LoginFormProps> = ({ className, onUpdateParent }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ className }) => {
     const navigate = useNavigate();
     // 创建 ref
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const rememberRef = useRef<HTMLButtonElement>(null);
-
+    const navToSignUp = () => {
+        navigate('/signup');
+    };
     // 验证用户
     const vertifyUser = () => {
         // 获取表单数据
@@ -46,7 +47,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ className, onUpdateParent }) => {
                         <Checkbox id="remember" ref={rememberRef} />
                         <Label htmlFor="remember">记住我</Label>
                     </div>
-                    <Button variant="link" className="px-0 text-sm" onClick={() => onUpdateParent(true)}>
+                    <Button variant="link" className="px-0 text-sm" onClick={navToSignUp}>
                         切换到注册
                     </Button>
                 </div>

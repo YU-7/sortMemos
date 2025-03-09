@@ -12,9 +12,14 @@ export default function RegistryRoute() {
         const registryUser = async () => {
             try {
                 const repo = new UserRepository();
-                const isValid = await repo.addUser({ email, password }); // 调用异步验证
+                const username = email;
+                const state = 'NORMAL';
+                const createTime = 1111;
+                const isValid = await repo.addUser({ email, password, username, state, createTime }); // 调用异步验证
+                console.log(isValid);
                 setIsLogined(isValid);
             } catch (error) {
+                console.error('注册失败:', error);
                 setIsLogined(false);
             } finally {
                 setIsLoading(false); // 结束加载
@@ -26,7 +31,6 @@ export default function RegistryRoute() {
     if (isLoading) {
         return <Skeleton className="h-8" />;
     } // 等待验证完成，先渲染Loading
-
     // 等到验证完成，再根据结果重新渲染内容
-    return <Navigate to="/" replace />;
+    return isLogined ? <Navigate to="/" replace /> : <Navigate to="/signup" replace />;
 }

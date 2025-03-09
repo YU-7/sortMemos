@@ -6,8 +6,8 @@ export interface User {
     username?: string;
     password?: string;
     email?: string;
-    createdTime?: string;
-    updatedTime?: string;
+    createTime?: number;
+    updateTime?: number;
     avatarUrl?: string;
     state?: string | null;
 }
@@ -18,12 +18,12 @@ export class UserRepository extends BaseRepository<User> {
         `CREATE TABLE IF NOT EXISTS Users (
     userID INT PRIMARY KEY,
     username TEXT NOT NULL UNIQUE,
-    email TEXT,
+    email TEXT NOT NULL UNIQUE,
     avatarUrl TEXT,
     password TEXT NOT NULL,
-    state TEXT NOT NULL CHECK(state IN ('STATE_UNSPECIFIED','NORMAL', 'ARCHIVED')),
-    createTime TEXT NOT NULL,
-    updateTime TEXT NOT NULL
+    state TEXT NOT NULL CHECK(state IN ('NORMAL', 'ARCHIVED')),
+    createTime INT NOT NULL,
+    updateTime INT
 );`
     ];
 
