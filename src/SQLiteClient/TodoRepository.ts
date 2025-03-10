@@ -14,7 +14,7 @@ export class todoRepository extends BaseRepository<todo> {
     protected tableName = 'TodoList';
     protected migrations = [
         `CREATE TABLE IF NOT EXISTS TodoList (
-            TODO_ID INT PRIMARY KEY,
+            TODO_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             usersEmail TEXT,
             project TEXT,
             keyWords TEXT,  -- 使用TEXT存储JSON数组

@@ -15,16 +15,18 @@ export interface User {
 export class UserRepository extends BaseRepository<User> {
     protected tableName = 'Users';
     protected migrations = [
-        `CREATE TABLE IF NOT EXISTS Users (
-    userID INT PRIMARY KEY,
-    username TEXT NOT NULL UNIQUE,
-    email TEXT NOT NULL UNIQUE,
-    avatarUrl TEXT,
-    password TEXT NOT NULL,
-    state TEXT NOT NULL CHECK(state IN ('NORMAL', 'ARCHIVED')),
-    createTime INT NOT NULL,
-    updateTime INT
-);`
+        `CREATE TABLE
+IF
+	NOT EXISTS Users (
+		userID INTEGER PRIMARY KEY AUTOINCREMENT,
+		username TEXT NOT NULL UNIQUE,
+		email TEXT NOT NULL UNIQUE,
+		avatarUrl TEXT,
+		password TEXT NOT NULL,
+		state TEXT NOT NULL CHECK ( state IN ( 'NORMAL', 'ARCHIVED' ) ),
+		createTime INT NOT NULL,
+	updateTime INT 
+	);`
     ];
 
     async createTable(): Promise<void> {

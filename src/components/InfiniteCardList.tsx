@@ -35,15 +35,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
             setCardItems((prev) => [newTodo, ...prev]);
         }
     }, [newTodo]); // 仅当 newTodo 变化时触发
-    const closeDialog = () => {
-        setCardItems((prev) => {
-            const curr = prev;
-            curr[currentCardIndex - 1].content = selectedCardData?.toString();
-            return curr;
-        });
-        modifiedCardIndexRef.current.push({ index: currentCardIndex, data: selectedCardData?.toString() || '' });
-        setIsDialogOpen(false);
-    };
+
     // 在组件卸载时，把修改过的卡片数据保存到数据库
     useEffect(() => {
         // 仅在组件卸载时执行的清理函数
@@ -55,6 +47,22 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
             // 等待所有更新操作完成
         };
     }, []); // 空依赖数组确保只在挂载和卸载时执行
+
+    const closeDialog = () => {
+        setCardItems((prev) => {
+            return prev.map((item) => {
+                if (item.TODO_ID === currentCardIndex) {
+                    return { ...item, content: selectedCardData?.toString() };
+                }
+                return item;
+            });
+        });
+        modifiedCardIndexRef.current.push({
+            index: currentCardIndex,
+            data: selectedCardData?.toString() || ''
+        });
+        setIsDialogOpen(false);
+    };
 
     // 加载更多数据
     const fetchMoreData = () => {
@@ -76,9 +84,12 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
         if (!targetCard) return;
         if (targetCard.id) {
             const id = parseInt(targetCard.id);
-            setCurrentCardIndex(id);
-            setSelectedCardData(cardItems[id - 1].content);
-            setIsDialogOpen(!isDialogOpen);
+            const selectedTodo = cardItems.find((item) => item.TODO_ID === id);
+            if (selectedTodo) {
+                setCurrentCardIndex(id);
+                setSelectedCardData(selectedTodo.content);
+                setIsDialogOpen(!isDialogOpen);
+            }
         }
     };
     useEffect(() => {
