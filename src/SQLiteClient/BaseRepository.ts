@@ -1,4 +1,4 @@
-// src/lib/database/BaseRepository.ts
+import { info } from '@tauri-apps/plugin-log';
 import { BaseDatabase } from './BaseDatabase';
 
 type WhereClause = Record<string, any>;
@@ -41,6 +41,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
         }
 
         const result = (await this.select(sql, params)) as T[];
+        info('SQL: ' + sql + ' Params: ' + params);
         return result;
     }
     /**
@@ -60,8 +61,9 @@ export abstract class BaseRepository<T> extends BaseDatabase {
                 WHERE ${whereClause}`;
 
         const params = [...Object.values(data), ...Object.values(where)];
-        console.log(sql, params);
+
         const result = await this.execute(sql, params);
+        info('SQL: ' + sql + ' Params: ' + params);
         return result.rowsAffected;
     }
 
@@ -80,7 +82,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
 
         const sql = `DELETE FROM ${this.tableName} WHERE ${whereClause}`;
         const params = Object.values(where);
-
+        info('SQL: ' + sql + ' Params: ' + params);
         const result = await this.execute(sql, params);
         return result.rowsAffected;
     }
@@ -99,7 +101,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
         const params = Object.values(data);
 
         const result = await this.execute(sql, params);
-        console.log(sql, params);
+        info('SQL: ' + sql + ' Params: ' + params);
         return result.lastInsertId || 0;
     }
 }

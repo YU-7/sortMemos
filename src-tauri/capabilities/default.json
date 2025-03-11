@@ -12,10 +12,10 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url":  "http://yupanel.site:*" 
+          "url": "http://yupanel.site:*"
         },
-         {
-          "url":  "http://localhost:*" 
+        {
+          "url": "http://localhost:*"
         }
       ],
       "deny": [
@@ -26,6 +26,9 @@
     },
     "sql:default",
     "sql:allow-load",
-    "sql:allow-execute"
+    "sql:allow-execute",
+    "log:default",
+    "log:default",
+    "log:default"
   ]
 }
