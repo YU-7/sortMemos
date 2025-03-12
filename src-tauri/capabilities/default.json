@@ -29,6 +29,9 @@
     "sql:allow-execute",
     "log:default",
     "log:default",
-    "log:default"
+    "log:default",
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
   ]
 }

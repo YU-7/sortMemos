@@ -1,13 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import MDEditor from '@uiw/react-md-editor';
 import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
+import { MemoCard } from './MemoCard';
+
 interface InfiniteCardListProps {
     className?: string;
     title: string;
@@ -18,15 +16,13 @@ interface ModifiedCards {
     index: number;
     data: string;
 }
+
+// 在组件内部添加拖拽逻辑
 const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, isToday, newTodo }) => {
     const todolist = new todoRepository();
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
     const [cardItems, setCardItems] = useState<todo[]>([]);
     const [hasMore, setHasMore] = useState(true);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
-    // 存储当前选中卡片的数据
-    const [selectedCardData, setSelectedCardData] = useState<String>();
     // 记录当前修改过的卡片的索引
     const modifiedCardIndexRef = useRef<ModifiedCards[]>([]);
     //  监听 newTodo 的变化
@@ -40,6 +36,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
     useEffect(() => {
         // 仅在组件卸载时执行的清理函数
         return () => {
+            console.log('component unmounted');
             modifiedCardIndexRef.current.map(({ index, data }) => {
                 return todolist.updateTodoList(index, { content: data });
             });
@@ -47,22 +44,6 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
             // 等待所有更新操作完成
         };
     }, []); // 空依赖数组确保只在挂载和卸载时执行
-
-    const closeDialog = () => {
-        setCardItems((prev) => {
-            return prev.map((item) => {
-                if (item.TODO_ID === currentCardIndex) {
-                    return { ...item, content: selectedCardData?.toString() };
-                }
-                return item;
-            });
-        });
-        modifiedCardIndexRef.current.push({
-            index: currentCardIndex,
-            data: selectedCardData?.toString() || ''
-        });
-        setIsDialogOpen(false);
-    };
 
     // 加载更多数据
     const fetchMoreData = () => {
@@ -76,22 +57,22 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
             });
         }, 1500);
     };
-
-    // 处理卡片点击
-    const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        // 根据className判断点击的是否是卡片
-        const targetCard = (e.target as HTMLElement).closest('.rounded-xl.border.bg-card.text-card-foreground.shadow');
-        if (!targetCard) return;
-        if (targetCard.id) {
-            const id = parseInt(targetCard.id);
-            const selectedTodo = cardItems.find((item) => item.TODO_ID === id);
-            if (selectedTodo) {
-                setCurrentCardIndex(id);
-                setSelectedCardData(selectedTodo.content);
-                setIsDialogOpen(!isDialogOpen);
-            }
+    function cardSave(cardId: number, newContent: string) {
+        // 更新父组件状态
+        setCardItems(items => items.map(i => 
+            i.TODO_ID === cardId ? {...i, content: newContent} : i
+        ));
+        
+        // 去重逻辑：查找相同索引的已有记录
+        const existingIndex = modifiedCardIndexRef.current.findIndex(item => item.index === cardId);
+        if (existingIndex > -1) {
+            // 替换已有记录
+            modifiedCardIndexRef.current.splice(existingIndex, 1, { index: cardId, data: newContent });
+        } else {
+            // 添加新记录
+            modifiedCardIndexRef.current.push({ index: cardId, data: newContent });
         }
-    };
+    }
     useEffect(() => {
         const initData = async () => {
             fetchMoreData();
@@ -104,12 +85,11 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
         return <Skeleton className={cn('basis-2/5 p-4', className)}>wait</Skeleton>;
     }
     return (
-        <div className={cn('basis-2/5 p-3 m-1 rounded-md border', className)} onClick={handleCardClick}>
+        <div className={cn('basis-2/5 p-3 m-1 rounded-md border flex flex-col', className)}>
             {/* 新增标题 */}
             <h2 className="text-xl font-bold mb-4 ml-2 text-card-foreground">{title || '待办事项列表'}</h2>
-
             {/* 无限滚动区域 */}
-            <div id="scrollableDiv" className="h-full overflow-y-auto">
+            <div id="scrollableDiv" className="flex-1 min-h-0 overflow-y-auto">
                 <InfiniteScroll
                     dataLength={cardItems?.length || 0}
                     next={fetchMoreData}
@@ -122,37 +102,22 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
                     scrollableTarget="scrollableDiv"
                     endMessage={<p className="text-center text-muted-foreground py-4">没有更多内容了</p>}
                 >
-                    <div className="space-y-4 p-2 ">
-                        {cardItems?.map((item: any, index) => (
-                            <Card key={index} id={item.TODO_ID}>
-                                <CardHeader>
-                                    <CardTitle>TODO #{item.TODO_ID}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <MDEditor.Markdown source={item?.content} />
-                                </CardContent>
-                            </Card>
+                    <div className="space-y-4 p-2">
+                        {cardItems?.map((item: any) => (
+                            <MemoCard
+                                key={item.TODO_ID}
+                                id={item.TODO_ID}
+                                content={item.content}
+                                onSave={(newContent) => cardSave(item.TODO_ID, newContent)}
+                            />
                         ))}
                     </div>
                 </InfiniteScroll>
             </div>
 
-            {/* 共用 Dialog */}
-            <Dialog open={isDialogOpen} onOpenChange={closeDialog}>
-                <DialogContent className="max-w-4xl w-[80%] h-[80vh]">
-                    <DialogHeader>
-                        <DialogTitle>详细信息</DialogTitle>
-                    </DialogHeader>
-                    <MDEditor
-                        value={selectedCardData?.toString()}
-                        onChange={setSelectedCardData}
-                        preview="edit"
-                        height="70vh"
-                    />
-                </DialogContent>
-            </Dialog>
         </div>
     );
 };
 
 export default InfiniteCardList;
+
