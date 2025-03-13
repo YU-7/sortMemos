@@ -4,13 +4,15 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
-import { MemoCard } from './MemoCard';
+import { MemoCard } from './MemoCard';import {useDroppable} from '@dnd-kit/core';
 
 interface InfiniteCardListProps {
     className?: string;
     title: string;
     isToday: boolean;
     newTodo?: todo;
+    droppableName: string;
+    dragTodo?:todo;
 }
 interface ModifiedCards {
     index: number;
@@ -18,11 +20,17 @@ interface ModifiedCards {
 }
 
 // 在组件内部添加拖拽逻辑
-const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, isToday, newTodo }) => {
+const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, isToday, newTodo,droppableName: id }) => {
     const todolist = new todoRepository();
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
     const [cardItems, setCardItems] = useState<todo[]>([]);
     const [hasMore, setHasMore] = useState(true);
+    const {isOver, setNodeRef} = useDroppable({
+        id: id,
+      });
+      const style = {
+        color: isOver ? 'green' : undefined,
+      };
     // 记录当前修改过的卡片的索引
     const modifiedCardIndexRef = useRef<ModifiedCards[]>([]);
     //  监听 newTodo 的变化
@@ -80,7 +88,6 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
         };
         initData();
     }, []); // 空依赖数组：仅在组件挂载时执行一次
-
     if (isLoading) {
         return <Skeleton className={cn('basis-2/5 p-4', className)}>wait</Skeleton>;
     }
@@ -102,7 +109,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
                     scrollableTarget="scrollableDiv"
                     endMessage={<p className="text-center text-muted-foreground py-4">没有更多内容了</p>}
                 >
-                    <div className="space-y-4 p-2">
+                    <div className="space-y-4 p-2" ref={setNodeRef} style={style} >
                         {cardItems?.map((item: any) => (
                             <MemoCard
                                 key={item.TODO_ID}

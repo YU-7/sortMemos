@@ -8,10 +8,10 @@ import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
+import {DndContext} from "@dnd-kit/core";
 function TodoList() {
     // 在组件顶部添加状态管理
-
+    const [isDropped, setIsDropped] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [newTodo, setNewTodo] = useState<string>();
@@ -30,6 +30,16 @@ function TodoList() {
             setIsDialogOpen(false);
         } catch (err) {
             console.error('添加待办事项时出错:', err);
+        }
+    }
+    function handleDragEnd(event:any) {
+        console.log(event);
+        const co = ['inbox','today'];
+        if (event.over && co.includes(event.over.id)) {
+            newTodoRef.current = {'content':event.active.data.current,'TODO_ID':event.active.id,'isToday':false};
+
+            console.log('拖拽到收件箱');
+          setIsDropped(true);
         }
     }
     return (
@@ -55,9 +65,10 @@ function TodoList() {
                 </Button>
             </div>
             <div className="h-[90%] flex flex-row relative">
+            <DndContext onDragEnd={handleDragEnd}>
                 {/* 左侧可折叠区域 */}
                 {isExpanded && (
-                    <InfiniteCardList
+                    <InfiniteCardList droppableName='inbox'
                         isToday={false}
                         title="收件箱"
                         newTodo={newTodoRef.current}
@@ -77,11 +88,12 @@ function TodoList() {
                     {isExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                 </Button>
                 {/* 右侧主内容区 */}
-                <InfiniteCardList
+                <InfiniteCardList droppableName='today'
                     isToday={true}
                     title="今日待办"
                     className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'}`}
                 />
+                </DndContext>
             </div>
             {/* 共用 Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
