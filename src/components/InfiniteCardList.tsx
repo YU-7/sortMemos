@@ -4,7 +4,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
-import { MemoCard } from './MemoCard';import {useDroppable} from '@dnd-kit/core';
+import { MemoCard } from './MemoCard';
+import { useDroppable } from '@dnd-kit/core';
 
 interface InfiniteCardListProps {
     className?: string;
@@ -12,7 +13,7 @@ interface InfiniteCardListProps {
     isToday: boolean;
     newTodo?: todo;
     droppableName: string;
-    dragTodo?:todo;
+    dragTodo?: todo;
 }
 interface ModifiedCards {
     index: number;
@@ -20,17 +21,23 @@ interface ModifiedCards {
 }
 
 // 在组件内部添加拖拽逻辑
-const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, isToday, newTodo,droppableName: id }) => {
+const InfiniteCardList: React.FC<InfiniteCardListProps> = ({
+    className,
+    title,
+    isToday,
+    newTodo,
+    droppableName: id
+}) => {
     const todolist = new todoRepository();
     const [isLoading, setIsLoading] = useState(true); // 添加加载状态
     const [cardItems, setCardItems] = useState<todo[]>([]);
     const [hasMore, setHasMore] = useState(true);
-    const {isOver, setNodeRef} = useDroppable({
-        id: id,
-      });
-      const style = {
-        color: isOver ? 'green' : undefined,
-      };
+    const { isOver, setNodeRef } = useDroppable({
+        id: id
+    });
+    const style = {
+        color: isOver ? 'green' : undefined
+    };
     // 记录当前修改过的卡片的索引
     const modifiedCardIndexRef = useRef<ModifiedCards[]>([]);
     //  监听 newTodo 的变化
@@ -67,12 +74,10 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
     };
     function cardSave(cardId: number, newContent: string) {
         // 更新父组件状态
-        setCardItems(items => items.map(i => 
-            i.TODO_ID === cardId ? {...i, content: newContent} : i
-        ));
-        
+        setCardItems((items) => items.map((i) => (i.TODO_ID === cardId ? { ...i, content: newContent } : i)));
+
         // 去重逻辑：查找相同索引的已有记录
-        const existingIndex = modifiedCardIndexRef.current.findIndex(item => item.index === cardId);
+        const existingIndex = modifiedCardIndexRef.current.findIndex((item) => item.index === cardId);
         if (existingIndex > -1) {
             // 替换已有记录
             modifiedCardIndexRef.current.splice(existingIndex, 1, { index: cardId, data: newContent });
@@ -109,7 +114,7 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
                     scrollableTarget="scrollableDiv"
                     endMessage={<p className="text-center text-muted-foreground py-4">没有更多内容了</p>}
                 >
-                    <div className="space-y-4 p-2" ref={setNodeRef} style={style} >
+                    <div className="space-y-4 p-2" ref={setNodeRef} style={style}>
                         {cardItems?.map((item: any) => (
                             <MemoCard
                                 key={item.TODO_ID}
@@ -120,10 +125,8 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
                     </div>
                 </InfiniteScroll>
             </div>
-
         </div>
     );
 };
 
 export default InfiniteCardList;
-

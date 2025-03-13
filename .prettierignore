@@ -1,0 +1,11 @@
+node_modules
+src-tauri
+build
+dist
+.cache
+.next
+.vscode
+*.md
+*.svg
+*.sh
+*.lock

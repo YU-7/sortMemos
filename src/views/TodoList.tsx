@@ -8,7 +8,7 @@ import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import {DndContext} from "@dnd-kit/core";
+import { DndContext } from '@dnd-kit/core';
 function TodoList() {
     // 在组件顶部添加状态管理
     const [isDropped, setIsDropped] = useState(false);
@@ -35,14 +35,13 @@ function TodoList() {
     // 为参数添加类型注解
     function handleDragEnd(event: any) {
         console.log(event);
-// 原代码中 'over' 未定义，推测需要从 event 中解构出 'over' 属性
-const { active, over, collisions } = event;
-        const co = ['inbox','today'];
+        const { active, over, collisions } = event;
+        const co = ['inbox', 'today'];
         console.log(collisions);
         if (co.includes(over.id) && collisions.length > 1) {
             console.log(event.active.data.current);
             newTodoRef.current = active.data.current;
-          setIsDropped(true);
+            setIsDropped(true);
         }
     }
     return (
@@ -68,34 +67,36 @@ const { active, over, collisions } = event;
                 </Button>
             </div>
             <div className="h-[90%] flex flex-row relative">
-            <DndContext onDragEnd={handleDragEnd}>
-                {/* 左侧可折叠区域 */}
-                {isExpanded && (
-                    <InfiniteCardList droppableName='inbox'
-                        isToday={false}
-                        title="收件箱"
-                        newTodo={newTodoRef.current}
-                        className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-0'}`}
+                <DndContext onDragEnd={handleDragEnd}>
+                    {/* 左侧可折叠区域 */}
+                    {isExpanded && (
+                        <InfiniteCardList
+                            droppableName="inbox"
+                            isToday={false}
+                            title="收件箱"
+                            newTodo={newTodoRef.current}
+                            className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-0'}`}
+                        />
+                    )}
+                    {/* 折叠按钮（带悬停动画） */}
+                    <Button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        variant={'ghost'}
+                        className="absolute top-1/2 -translate-y-1/2 border rounded-lg p-1 z-10 hover:scale-110 transition-transform py-10"
+                        style={{
+                            left: isExpanded ? 'calc(50% - 13px)' : '7px' // 动态位置
+                        }}
+                    >
+                        {/* 箭头图标 */}
+                        {isExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                    </Button>
+                    {/* 右侧主内容区 */}
+                    <InfiniteCardList
+                        droppableName="today"
+                        isToday={true}
+                        title="今日待办"
+                        className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'}`}
                     />
-                )}
-                {/* 折叠按钮（带悬停动画） */}
-                <Button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    variant={'ghost'}
-                    className="absolute top-1/2 -translate-y-1/2 border rounded-lg p-1 z-10 hover:scale-110 transition-transform py-10"
-                    style={{
-                        left: isExpanded ? 'calc(50% - 13px)' : '7px' // 动态位置
-                    }}
-                >
-                    {/* 箭头图标 */}
-                    {isExpanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                </Button>
-                {/* 右侧主内容区 */}
-                <InfiniteCardList droppableName='today'
-                    isToday={true}
-                    title="今日待办"
-                    className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'}`}
-                />
                 </DndContext>
             </div>
             {/* 共用 Dialog */}

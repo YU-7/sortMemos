@@ -1,8 +1,7 @@
-import { platform,arch,family,version,locale,exeExtension } from '@tauri-apps/plugin-os';
+import { platform, arch, family, version, locale, exeExtension } from '@tauri-apps/plugin-os';
 import { useState, useEffect } from 'react';
 
 function Setting() {
-    
     // 获取所有系统信息的状态
     const [systemInfo, setSystemInfo] = useState<{
         platform: string;
@@ -27,7 +26,6 @@ function Setting() {
                     exeExtension: exeExtension(),
                     locale: localeRes?.toString() || ''
                 });
-
             } catch (error) {
                 console.error('获取系统信息失败:', error);
             }
@@ -40,7 +38,6 @@ function Setting() {
     useEffect(() => {
         if (systemInfo) {
             console.log('系统信息:', systemInfo);
-
         }
     }, [systemInfo]);
 

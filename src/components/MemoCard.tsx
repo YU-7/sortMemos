@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import CardToolKit from './CardToolKit';
-import { todo} from '@/SQLiteClient/TodoRepository';
+import { todo } from '@/SQLiteClient/TodoRepository';
 
 export const MemoCard = ({
     todo,
@@ -16,9 +16,9 @@ export const MemoCard = ({
     const [selectedCardData, setSelectedCardData] = useState(todo.content);
     const { TODO_ID, content } = todo;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const {setNodeRef, transform } = useDraggable({
+    const { setNodeRef, transform } = useDraggable({
         id: TODO_ID || 0,
-        data: todo,
+        data: todo
     });
     const style = transform
         ? {
@@ -31,8 +31,8 @@ export const MemoCard = ({
     }
     return (
         <div ref={setNodeRef} style={style}>
-            <Card >
-                <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}}/>
+            <Card>
+                <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}} />
                 <CardHeader>
                     <CardTitle>TODO #{todo.TODO_ID}</CardTitle>
                 </CardHeader>
