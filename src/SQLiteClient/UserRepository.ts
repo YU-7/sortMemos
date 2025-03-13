@@ -41,6 +41,6 @@ IF
 
     async vertifyUser(email: string, password: string): Promise<boolean> {
         const result = await this.find({ email, password }, ['createTime', 'DESC'], 1);
-        return result[0] ? true : false;
+        return result.length ? true : false;
     }
 }
