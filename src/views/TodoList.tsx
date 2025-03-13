@@ -19,7 +19,7 @@ function TodoList() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     async function addNewTodo() {
         const lastTodo = new todoRepository();
-        const updateData = { content: newTodo, isToday: false, createTime: new Date() };
+        const updateData = { content: newTodo, isToday: false, createTime: 1 };
         try {
             const lastID = await lastTodo.addTodo(updateData);
             newTodoRef.current = {
@@ -36,9 +36,8 @@ function TodoList() {
         console.log(event);
         const co = ['inbox','today'];
         if (event.over && co.includes(event.over.id)) {
+            console.log(event.active.data.current);
             newTodoRef.current = {'content':event.active.data.current,'TODO_ID':event.active.id,'isToday':false};
-
-            console.log('拖拽到收件箱');
           setIsDropped(true);
         }
     }

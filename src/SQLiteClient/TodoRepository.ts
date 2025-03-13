@@ -5,8 +5,10 @@ export interface todo {
     project?: string;
     keyWords?: string;
     content?: string;
-    updateTime?: string | null;
-    complteTime?: string | null;
+    createTime?: number;
+    updateTime?: number | null;
+    complteTime?: number | null;
+    priority?: number;
     isToday?: boolean;
 }
 
@@ -22,6 +24,7 @@ export class todoRepository extends BaseRepository<todo> {
             createTime INT NOT NULL,
             updateTime INT,
             complteTime INT,
+            priority INT,
             isToday TEXT CHECK(isToday IN ('true', 'false'))
         );`
     ];
