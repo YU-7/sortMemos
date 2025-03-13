@@ -113,8 +113,6 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, i
                         {cardItems?.map((item: any) => (
                             <MemoCard
                                 key={item.TODO_ID}
-                                id={item.TODO_ID}
-                                content={item.content}
                                 todo={item}
                                 onSave={(newContent) => cardSave(item.TODO_ID, newContent)}
                             />

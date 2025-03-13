@@ -7,21 +7,18 @@ import CardToolKit from './CardToolKit';
 import { todo} from '@/SQLiteClient/TodoRepository';
 
 export const MemoCard = ({
-    id,
-    content,
     todo,
     onSave // 新增保存回调
 }: {
-    id: number;
-    content: string;
     todo: todo;
     onSave: (newContent: string) => void; // 新增 props 类型定义
 }) => {
-    const [selectedCardData, setSelectedCardData] = useState<String>(content);
+    const [selectedCardData, setSelectedCardData] = useState(todo.content);
+    const { TODO_ID, content } = todo;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const {setNodeRef, transform } = useDraggable({
-        id: id.toString(),
-        data: selectedCardData
+        id: TODO_ID || 0,
+        data: todo,
     });
     const style = transform
         ? {
@@ -33,11 +30,11 @@ export const MemoCard = ({
         onSave(selectedCardData?.toString() || ''); // 调用保存回调
     }
     return (
-        <div id={id.toString()} ref={setNodeRef} style={style}>
-            <Card id={id.toString()} >
+        <div ref={setNodeRef} style={style}>
+            <Card >
                 <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}}/>
                 <CardHeader>
-                    <CardTitle>TODO #{id}</CardTitle>
+                    <CardTitle>TODO #{todo.TODO_ID}</CardTitle>
                 </CardHeader>
                 <CardContent onClick={() => setIsDialogOpen(!isDialogOpen)}>
                     <MDEditor.Markdown source={content} />

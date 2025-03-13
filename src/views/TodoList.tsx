@@ -32,12 +32,16 @@ function TodoList() {
             console.error('添加待办事项时出错:', err);
         }
     }
-    function handleDragEnd(event:any) {
+    // 为参数添加类型注解
+    function handleDragEnd(event: any) {
         console.log(event);
+// 原代码中 'over' 未定义，推测需要从 event 中解构出 'over' 属性
+const { active, over, collisions } = event;
         const co = ['inbox','today'];
-        if (event.over && co.includes(event.over.id)) {
+        console.log(collisions);
+        if (co.includes(over.id) && collisions.length > 1) {
             console.log(event.active.data.current);
-            newTodoRef.current = {'content':event.active.data.current,'TODO_ID':event.active.id,'isToday':false};
+            newTodoRef.current = active.data.current;
           setIsDropped(true);
         }
     }

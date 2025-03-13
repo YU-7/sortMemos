@@ -11,7 +11,7 @@ interface CardToolKitProps {
 
 export default function CardToolKit({ todo, onDelete, onComplete }: CardToolKitProps) {
   const { attributes, listeners } = useDraggable({
-    id: todo && todo.TODO_ID ? todo.TODO_ID.toString() : 'default-id',
+    id: todo && todo.TODO_ID ? todo.TODO_ID : 'default-id',
     data: todo,
   });
 
