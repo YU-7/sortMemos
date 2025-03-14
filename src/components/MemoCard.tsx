@@ -20,7 +20,8 @@ export const MemoCard = ({
     });
     const style = transform
         ? {
-              transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
+              transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+              zIndex: 999, // 新增 z-index 提升拖拽层级
           }
         : undefined;
     function handleDialogClose() {
@@ -28,7 +29,7 @@ export const MemoCard = ({
         setIsDialogOpen(!isDialogOpen);
     }
     return (
-        <div ref={setNodeRef} style={style}>
+        <div ref={setNodeRef} style={style} className="relative hover:z-600" >
             <Card>
                 <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}} />
                 <CardHeader>

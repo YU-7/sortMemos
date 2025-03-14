@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import InfiniteCardList from '../components/InfiniteCardList';
 import { Button } from '@/components/ui/button';
-import { todo } from '@/SQLiteClient/TodoRepository';
 import KanBoardTool from '@/components/KanBoardTool';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DndContext } from '@dnd-kit/core';
@@ -13,12 +12,10 @@ function TodoList() {
     const { todayCards, addTodayCard, updateTodayCard } = useTodayCards();
     const { inboxCards, moveToToday } = useInboxCards();
     const [isExpanded, setIsExpanded] = useState(false);
-    const newTodoRef = useRef<todo>();
     // 为参数添加类型注解
     function handleDragEnd(event: any) {
         console.log(event);
         const { active, over, collisions } = event;
-        const co = ['inbox', 'today'];
         if (over.id === 'today' && collisions.length > 1) {
             moveToToday(active.id);
         }
