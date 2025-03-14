@@ -8,10 +8,8 @@ import { todo } from '@/SQLiteClient/TodoRepository';
 
 export const MemoCard = ({
     todo,
-    onSave // 新增保存回调
 }: {
     todo: todo;
-    onSave: (newContent: string) => void; // 新增 props 类型定义
 }) => {
     const [selectedCardData, setSelectedCardData] = useState(todo.content);
     const { TODO_ID, content } = todo;
@@ -26,8 +24,8 @@ export const MemoCard = ({
           }
         : undefined;
     function handleDialogClose() {
+        todo.content = selectedCardData;
         setIsDialogOpen(!isDialogOpen);
-        onSave(selectedCardData?.toString() || ''); // 调用保存回调
     }
     return (
         <div ref={setNodeRef} style={style}>
@@ -47,7 +45,7 @@ export const MemoCard = ({
                     </DialogHeader>
                     <MDEditor
                         value={selectedCardData?.toString()}
-                        onChange={setSelectedCardData.toString}
+                        onChange={setSelectedCardData}
                         preview="edit"
                         height="70vh"
                     />

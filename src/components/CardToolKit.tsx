@@ -2,7 +2,7 @@ import { GripVertical, Calendar, Trash, CheckCircle } from 'lucide-react';
 import { useDraggable } from '@dnd-kit/core';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { SignalHigh, SignalMedium, SignalLow } from 'lucide-react';
-
+import {timestampToDate} from '@/util';
 interface CardToolKitProps {
     todo: todo;
     onDelete: () => void;
@@ -23,13 +23,13 @@ export default function CardToolKit({ todo, onDelete, onComplete }: CardToolKitP
             {/* 日期显示 */}
             <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4 text-gray-500" />
-                <span className="text-sm text-gray-600">{todo.updateTime}</span>
+                <span className="text-sm text-gray-600">{"创建时间"+timestampToDate(todo.createTime || 0,'YYYY-MM-DD HH:mm:ss')}</span>
             </div>
 
             {/* 日期显示 */}
             <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4 text-gray-500" />
-                <span className="text-sm text-gray-600">{todo.updateTime}</span>
+                <span className="text-sm text-gray-600">{"截至时间"+timestampToDate(todo.updateTime || 0,'YYYY-MM-DD HH:mm:ss')}</span>
             </div>
 
             {/* 优先级图标 */}

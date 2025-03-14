@@ -16,7 +16,6 @@ export default function RegistryRoute() {
                 const state = 'NORMAL';
                 const createTime = 1111;
                 const isValid = await repo.addUser({ email, password, username, state, createTime }); // 调用异步验证
-                console.log(isValid);
                 setIsLogined(isValid);
             } catch (error) {
                 console.error('注册失败:', error);
