@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import CollapsibleSidebar from '@/components/CollapsibleSidebar';
 import AuthRoute from '@/routes/AuthRoute';
-import { TodayCardsProvider } from '@/contexts/todayCards';
-import { InboxCardsProvider } from '@/contexts/inboxCards';
+import { TodayCardsProvider } from '@/contexts/cardList';
+
 export default function Home() {
     return (
         <AuthRoute>
@@ -10,11 +10,8 @@ export default function Home() {
                 {/* 左侧导航栏 */}
                 <CollapsibleSidebar />
                 <TodayCardsProvider>
-                    <InboxCardsProvider>
-                        {/* 右侧内容区域 */}
-
-                        <Outlet />
-                    </InboxCardsProvider>
+                    {/* 右侧内容区域 */}
+                    <Outlet />
                 </TodayCardsProvider>
             </div>
         </AuthRoute>

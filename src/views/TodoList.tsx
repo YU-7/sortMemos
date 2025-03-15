@@ -1,21 +1,21 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import InfiniteCardList from '../components/InfiniteCardList';
 import { Button } from '@/components/ui/button';
 import KanBoardTool from '@/components/KanBoardTool';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DndContext } from '@dnd-kit/core';
-
-import { useTodayCards } from '@/contexts/todayCards';
-import { useInboxCards } from '@/contexts/inboxCards';
+import { useTodayCards } from '@/contexts/cardList';
 function TodoList() {
     // 在组件顶部添加状态管理
-    const { todayCards, addTodayCard, updateTodayCard } = useTodayCards();
-    const { inboxCards, moveToToday } = useInboxCards();
+    const { todayCards, inboxCards, moveToToday, moveToInbox } = useTodayCards();
     const [isExpanded, setIsExpanded] = useState(false);
     // 为参数添加类型注解
     function handleDragEnd(event: any) {
         console.log(event);
         const { active, over, collisions } = event;
+        if (over.id === 'inbox' && collisions.length > 1) {
+            moveToInbox(active.id);
+        }
         if (over.id === 'today' && collisions.length > 1) {
             moveToToday(active.id);
         }

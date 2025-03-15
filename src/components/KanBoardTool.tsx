@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
@@ -5,24 +6,24 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
-import { useInboxCards } from '@/contexts/inboxCards';
-
+import { useTodayCards } from '@/contexts/cardList';
 
 interface KanBoardToolProps {
-  className?: string;
+    className?: string;
 }
 
 export default function KanBoardTool({ className }: KanBoardToolProps) {
     const [inputValue, setInputValue] = useState('');
-    const {addInboxCard} = useInboxCards();
+    const { addInboxCard } = useTodayCards();
     const [newTodo, setNewTodo] = useState<string>();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     async function addNewTodo() {
-       addInboxCard(newTodo || '');
-       setIsDialogOpen(false);
+        addInboxCard(newTodo || '');
+        setNewTodo('');
+        setIsDialogOpen(false);
     }
     return (
-        <div className="h-[10%] flex items-center gap-4 px-4">
+        <div className={cn('h-[10%] flex items-center gap-4 px-4', className)}>
             <div className="flex-1 max-w-2xl">
                 <div className="relative">
                     <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
