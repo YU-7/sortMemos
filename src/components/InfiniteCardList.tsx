@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { MemoCard } from './MemoCard';
 import { useDroppable } from '@dnd-kit/core';
-
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTodayCards } from '@/contexts/cardList';
 interface InfiniteCardListProps {
     className?: string;
     title: string;
@@ -12,13 +15,26 @@ interface InfiniteCardListProps {
 
 // 在组件内部添加拖拽逻辑
 const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, cards, droppableName: id }) => {
+    const { refreshInboxCards,refreshTodayCards } = useTodayCards();
     const { isOver, setNodeRef } = useDroppable({
         id: id
     });
+    const [currentPage, setCurrentPage] = useState(1);
     const style = {
         color: isOver ? 'green' : undefined
     };
-
+    function prePage() {
+        setCurrentPage(currentPage - 1);
+        refreshInboxCards();
+        refreshTodayCards();
+        console.log('上一页');
+    }
+    function nextPage() {
+        setCurrentPage(currentPage + 1);
+        refreshInboxCards();
+        refreshTodayCards();
+        console.log('下一页');
+    }
     return (
         <div
             className={cn('basis-2/5 p-3 m-1 rounded-md border flex flex-col', className)}
@@ -32,6 +48,27 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, c
                 <div className="space-y-4 p-2">
                     {cards?.map((item: any) => <MemoCard key={item.TODO_ID} todo={item} />)}
                 </div>
+            </div>
+
+            {/* 更新分页按钮组 */}
+            <div className="mt-4 flex justify-center items-center space-x-4">
+                <Button
+                    className="w-8 h-5 rounded-md hover:bg-gray-300 disabled:opacity-50"
+                    disabled={currentPage == 1}
+                    onClick={prePage}
+                >
+                    <ChevronLeft className="w-4 h-4 text-current"></ChevronLeft>
+                </Button>
+                <span className="px-4 text-gray-700">
+                    第 {currentPage} 页
+                </span>
+                <Button
+                    className="w-8 h-5 rounded-md hover:bg-gray-300 disabled:opacity-50"
+                    onClick={nextPage}
+                    disabled={cards.length <= 10}
+                >
+                    <ChevronRight className="w-4 h-4 text-current"></ChevronRight>
+                </Button>
             </div>
         </div>
     );
