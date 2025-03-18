@@ -10,8 +10,8 @@
   ],
   "permissions": [
     "autostart:default",
-    "autostart:default",
-    "autostart:default",
-    "autostart:default"
+    "autostart:allow-enable",
+    "autostart:allow-disable",
+    "autostart:allow-is-enabled"
   ]
 }

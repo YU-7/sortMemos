@@ -28,9 +28,6 @@
     "sql:allow-load",
     "sql:allow-execute",
     "log:default",
-    "autostart:allow-enable",
-    "autostart:allow-disable",
-    "autostart:allow-is-enabled",
     "os:allow-locale"
   ]
 }
