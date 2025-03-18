@@ -38,7 +38,6 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, c
         console.log('下一页');
     }
     return (
-        // 修改容器类名
         <div
           className={cn(
             'basis-2/5 p-3 m-1 rounded-md border flex flex-col',

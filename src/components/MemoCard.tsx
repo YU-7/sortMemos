@@ -29,7 +29,7 @@ export const MemoCard = ({
         setIsDialogOpen(!isDialogOpen);
     }
     return (
-        <div ref={setNodeRef} style={style} className="relative hover:z-600" >
+        <div ref={setNodeRef} style={style} >
             <Card>
                 <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}} />
                 <CardHeader>

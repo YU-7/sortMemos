@@ -3,6 +3,7 @@ import { useDraggable } from '@dnd-kit/core';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { SignalHigh, SignalMedium, SignalLow } from 'lucide-react';
 import {timestampToDate} from '@/util';
+import { Combobox } from './Combobox';
 interface CardToolKitProps {
     todo: todo;
     onDelete: () => void;
@@ -33,6 +34,7 @@ export default function CardToolKit({ todo, onDelete, onComplete }: CardToolKitP
             </div>
 
             {/* 优先级图标 */}
+            <Combobox></Combobox>
             {todo.priority === 1 && <SignalHigh className="h-5 w-5 text-red-500" />}
             {todo.priority === 2 && <SignalMedium className="h-5 w-5 text-yellow-500" />}
             {todo.priority === 3 && <SignalLow className="h-5 w-5 text-gray-400" />}
