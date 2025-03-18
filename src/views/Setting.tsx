@@ -2,6 +2,7 @@ import { Switch } from '@/components/ui/switch';
 import { platform, arch, family, version, locale, exeExtension } from '@tauri-apps/plugin-os';
 import { useState, useEffect } from 'react';
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
+import { open } from '@tauri-apps/plugin-dialog';
 
 function Setting() {
     // 获取所有系统信息的状态
@@ -50,7 +51,13 @@ function Setting() {
     useEffect(() => {
         isEnabled().then(setAutoStartEnabled);
     }, []);
-
+async function openFile() {
+    const file = await open({
+        multiple: false,
+        directory: false,
+      });
+      console.log(file);
+}
     // 修改切换逻辑
     async function toggleAutoStart(checked: boolean) {
         if (checked) {
@@ -73,6 +80,7 @@ function Setting() {
                     <label htmlFor="auto-start-switch">开机自启动</label>
                 </div>
             </div>
+            <button onClick={openFile}>open</button>
             <div className="flex items-center justify-center h-screen bg-gray-100"></div>
         </div>
     );
