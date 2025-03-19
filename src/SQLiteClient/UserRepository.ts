@@ -10,6 +10,7 @@ export interface User {
     updateTime?: number;
     avatarUrl?: string;
     state?: string | null;
+    isDeleted?: boolean;
 }
 
 export class UserRepository extends BaseRepository<User> {
@@ -25,7 +26,8 @@ IF
 		password TEXT NOT NULL,
 		state TEXT NOT NULL CHECK ( state IN ( 'NORMAL', 'ARCHIVED' ) ),
 		createTime INT NOT NULL,
-	updateTime INT 
+	    updateTime INT,
+		isDeleted TEXT CHECK(isDeleted IN ('true', 'false'))
 	);`
     ];
 

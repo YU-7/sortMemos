@@ -65,13 +65,13 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, c
                 >
                     <ChevronLeft className="w-4 h-4 text-current"></ChevronLeft>
                 </Button>
-                <span className="px-4 text-gray-700">
+                <span className="mt-4 flex justify-center items-center space-x-4">
                     第 {currentPage} 页
                 </span>
                 <Button
                     className="w-8 h-5 rounded-md hover:bg-gray-300 disabled:opacity-50"
                     onClick={nextPage}
-                    disabled={cards.length <= 10}
+                    disabled={cards.length < 3}
                 >
                     <ChevronRight className="w-4 h-4 text-current"></ChevronRight>
                 </Button>

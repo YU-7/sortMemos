@@ -13,16 +13,16 @@ pub fn run() {
         .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_sql::Builder::default().build())
-        // .setup(move |app| {
-        //     #[cfg(desktop)]
-        //     {
-        //         app.handle().plugin(tauri_plugin_autostart::init(
-        //             tauri_plugin_autostart::MacosLauncher::AppleScript,
-        //             None,
-        //         ))?;
-        //     }
-        //     Ok(()) // 返回一个 Ok(()) 以满足 Result<(), Box<dyn Error>> 类型要求
-        // })
+        .setup(move |app| {
+            #[cfg(desktop)]
+            {
+                app.handle().plugin(tauri_plugin_autostart::init(
+                    tauri_plugin_autostart::MacosLauncher::AppleScript,
+                    None,
+                ))?;
+            }
+            Ok(()) // 返回一个 Ok(()) 以满足 Result<(), Box<dyn Error>> 类型要求
+        })
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

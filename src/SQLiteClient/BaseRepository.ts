@@ -39,9 +39,10 @@ export abstract class BaseRepository<T> extends BaseDatabase {
             const limit = pageSize;
             sql += ` LIMIT ${limit} OFFSET ${offset}`;
         }
-
+    
         const result = (await this.select(sql, params)) as T[];
         info('SQL: ' + sql + ' Params: ' + params);
+        console.log(sql);
         return result;
     }
     /**
@@ -73,7 +74,7 @@ export abstract class BaseRepository<T> extends BaseDatabase {
      */
     async delete(where: WhereClause, softDelete: boolean = true): Promise<number> {
         if (softDelete) {
-            return this.update({ deleted_at: new Date().toISOString() } as any, where);
+            return this.update({ isDeleted: true } as any, where);
         }
 
         const whereClause = Object.keys(where)

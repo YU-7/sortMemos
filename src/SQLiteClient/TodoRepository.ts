@@ -6,10 +6,12 @@ export interface todo {
     keyWords?: string;
     content?: string;
     createTime?: number;
-    updateTime?: number | null;
+    dueTime?: number | null;
     complteTime?: number | null;
     priority?: number;
     isToday?: boolean;
+    isCompleted?: boolean;
+    isDeleted?: boolean;
 }
 
 export class todoRepository extends BaseRepository<todo> {
@@ -22,10 +24,11 @@ export class todoRepository extends BaseRepository<todo> {
             keyWords TEXT,  -- 使用TEXT存储JSON数组
             content TEXT,
             createTime INT NOT NULL,
-            updateTime INT,
             complteTime INT,
             priority INT,
-            isToday TEXT CHECK(isToday IN ('true', 'false'))
+            isToday TEXT CHECK(isToday IN ('true', 'false')),
+            isCompleted TEXT CHECK(isCompleted IN ('true', 'false')),
+            isDeleted TEXT CHECK(isDeleted IN ('true', 'false'))
         );`
     ];
 
@@ -43,5 +46,9 @@ export class todoRepository extends BaseRepository<todo> {
     }
     async addTodo(todo: todo): Promise<number> {
         return await this.add(todo);
+    }
+
+    async deleteTodo(TODO_ID: number): Promise<number> {
+        return await this.delete({ TODO_ID });
     }
 }

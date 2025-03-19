@@ -11,10 +11,10 @@ type TodayCardsContextType = {
     addTodayCard: (content: string) => Promise<void>;
     refreshTodayCards: () => Promise<void>;
     refreshInboxCards: () => Promise<void>;
-    updateInboxCard: (id: number, newData: Partial<todo>) => Promise<void>;
-    updateTodayCard: (id: number, newData: Partial<todo>) => Promise<void>;
+    updateTodo: (id: number, newData: Partial<todo>) => Promise<void>;
     moveToToday: (id: number) => Promise<void>;
     moveToInbox: (id: number) => Promise<void>;
+    delTodo: (id: number) => Promise<void>;
 };
 
 const TodayCardsContext = createContext<TodayCardsContextType>({} as TodayCardsContextType);
@@ -35,7 +35,7 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
     const refreshTodayCards = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await repo.findTodoList({ isToday: true }, 1, 15);
+            const data = await repo.findTodoList({ isToday: true }, 1, 3);
             setTodayCards(data || []);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('刷新失败'));
@@ -64,25 +64,20 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
             setError(err instanceof Error ? err : new Error('添加失败'));
         }
     }, []);
-    const updateInboxCard = useCallback(async (id: number, newData: Partial<todo>) => {
+    const updateTodo = useCallback(async (id: number, newData: Partial<todo>) => {
         try {
+            newData.isToday
+                ? setTodayCards((prev) => prev.map((t) => (t.TODO_ID === id ? { ...t, ...newData } : t)))
+                : setInboxCards((prev) => prev.map((t) => (t.TODO_ID === id ? { ...t, ...newData } : t)));
             await repo.updateTodoList(id, newData);
-            setInboxCards((prev) => prev.map((t) => (t.TODO_ID === id ? { ...t, ...newData } : t)));
         } catch (err) {
             setError(err instanceof Error ? err : new Error('更新失败'));
         }
     }, []);
-    const updateTodayCard = useCallback(async (id: number, newData: Partial<todo>) => {
-        try {
-            await repo.updateTodoList(id, newData);
-            setTodayCards((prev) => prev.map((t) => (t.TODO_ID === id ? { ...t, ...newData } : t)));
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error('更新失败'));
-        }
-    }, []);
+
     const refreshInboxCards = useCallback(async () => {
         try {
-            const data = await repo.findTodoList({ isToday: false }, 1, 15);
+            const data = await repo.findTodoList({ isToday: false }, 1, 3);
             setInboxCards(data || []);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('刷新失败'));
@@ -152,6 +147,15 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
         }
     }, []);
 
+    const delTodo = useCallback(async (id: number) => {
+        try {
+            await repo.deleteTodo(id);
+            setInboxCards((prev) => prev.filter((t) => t.TODO_ID !== id));
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('删除失败'));
+        }
+    }, []);
+
     return (
         <TodayCardsContext.Provider
             value={{
@@ -161,12 +165,12 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
                 error,
                 addTodayCard,
                 refreshTodayCards,
-                updateTodayCard,
+                updateTodo,
                 addInboxCard,
                 refreshInboxCards,
                 moveToToday,
                 moveToInbox,
-                updateInboxCard
+                delTodo
             }}
         >
             {children}
