@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { SignalHigh, SignalMedium, SignalLow,Siren } from 'lucide-react';
+import { SignalHigh, SignalMedium,Siren } from 'lucide-react';
 const priorityArr = [
     {
         value: '1',

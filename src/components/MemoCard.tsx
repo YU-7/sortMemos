@@ -33,7 +33,7 @@ export const MemoCard = ({
     return (
         <div ref={setNodeRef} style={style} > 
                 <Card className="relative max-h-[400px] overflow-hidden transition-all duration-300">
-                    <CardToolKit todo={todo} onDelete={() => {}} onComplete={() => {}} />
+                    <CardToolKit todo={todo} />
                     <CardHeader>
                         <CardTitle>TODO #{todo.TODO_ID}</CardTitle>
                     </CardHeader>

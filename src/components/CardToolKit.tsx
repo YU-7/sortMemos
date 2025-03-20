@@ -1,7 +1,7 @@
 import { GripVertical, CalendarPlus, CalendarClock, Trash, SquareCheckBig } from 'lucide-react';
 import { useDraggable } from '@dnd-kit/core';
 import { todo } from '@/SQLiteClient/TodoRepository';
-import {timestampToDate} from '@/util';
+import {timestampToDate} from '@/toolKit/util';
 import { PriorityBox } from './PriorityBox';
 import { useTodayCards } from '@/contexts/cardList';
 
