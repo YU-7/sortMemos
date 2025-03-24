@@ -1,0 +1,46 @@
+import { TrayIcon } from '@tauri-apps/api/tray';
+import { Menu } from '@tauri-apps/api/menu';
+import { defaultWindowIcon } from '@tauri-apps/api/app';
+import { getCurrentWebview } from '@tauri-apps/api/webview';
+import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
+
+
+// 在应用初始化后添加
+export async function setupTray() {
+    const a =  getCurrentWebviewWindow();
+    a.onCloseRequested((e) => {
+        e.preventDefault();
+        a.hide();
+    })
+    const menu = await Menu.new({
+        items: [
+            {
+                id: 'mainPage',
+                text: 'mainPage',
+                action: () => {
+                  a.show();
+                },
+              },
+          {
+            id: 'quit',
+            text: 'Quit',
+            action: () => {
+              a.close();
+            },
+          },
+        ],
+      });
+    // 定义托盘图标选项
+    const options = {
+        id: 'main',
+        title: 'sortMemos',
+        tooltip: 'sortMemos',
+        menu,
+        icon: (await defaultWindowIcon()) || '',
+    };
+    var tray = await TrayIcon.getById('main');
+    
+    if (tray === null) {
+       tray = await TrayIcon.new(options);
+    }
+}

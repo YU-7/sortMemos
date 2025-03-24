@@ -6,8 +6,8 @@ import { useState, useEffect } from 'react';
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
 import { open } from '@tauri-apps/plugin-dialog';
 import { Copy } from 'lucide-react';
-
-// 在顶部导入新组件
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {setupTray}  from '@/views/SystemTray';
 import { SettingItem } from '@/components/Setting/SettingItem';
 
 function Setting() {
@@ -49,6 +49,10 @@ function Setting() {
     useEffect(() => {
         isEnabled().then(setAutoStartEnabled);
     }, []);
+
+    useEffect(() => {
+        setupTray();
+    },[])
     async function openFile() {
         const file = await open({
             multiple: false,
@@ -104,9 +108,19 @@ function Setting() {
                     </SettingItem>
 
                     <SettingItem title="软件信息" description="软件版本号、系统版本号等信息">
+                    <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
                         <Button variant="outline" className="px-4 py-2">
                             <Copy className="w-4 h-4 mr-2" />
                         </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {"systemInfo"}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                        
                     </SettingItem>
                 </div>
             </TabsContent>

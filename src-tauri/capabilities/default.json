@@ -6,6 +6,11 @@
     "main"
   ],
   "permissions": [
+    "core:app:allow-default-window-icon",
+    "core:window:allow-show",
+    "core:window:allow-close",
+    "core:window:allow-hide",
+    "core:webview:allow-webview-hide",
     "core:default",
     "opener:default",
     {

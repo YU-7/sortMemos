@@ -14,17 +14,13 @@
       {
         "title": "sortmemos",
         "width": 900,
-        "height": 600
+        "height": 600,
+        "minHeight": 600,
+        "minWidth": 900
       }
     ],
     "security": {
       "csp": null
-    },
-    "trayIcon":{
-      "id":"main",
-      "iconPath": "icons/32x32.png",
-      "title": "sortmemos",
-      "tooltip": "sortmemos"
     }
   },
   "bundle": {
