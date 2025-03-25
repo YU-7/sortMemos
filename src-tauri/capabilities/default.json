@@ -29,6 +29,9 @@
         }
       ]
     },
+    "process:allow-exit",
+    "process:allow-restart",
+     "opener:allow-default-urls",
     "sql:default",
     "sql:allow-load",
     "sql:allow-execute",

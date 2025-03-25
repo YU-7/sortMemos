@@ -9,6 +9,7 @@ import { Copy } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {setupTray}  from '@/views/SystemTray';
 import { SettingItem } from '@/components/Setting/SettingItem';
+import Acknowledgement from '@/views/Acknowledgement';
 
 function Setting() {
     // 移除手动选中的状态管理，改用Tabs组件管理
@@ -139,7 +140,7 @@ function Setting() {
             </TabsContent>
 
             <TabsContent value="about" className="flex-1 p-8 mt-0">
-                kaiyuan
+                <Acknowledgement/>
             </TabsContent>
         </Tabs>
     );

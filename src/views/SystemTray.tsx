@@ -1,16 +1,19 @@
 import { TrayIcon } from '@tauri-apps/api/tray';
 import { Menu } from '@tauri-apps/api/menu';
 import { defaultWindowIcon } from '@tauri-apps/api/app';
-import { getCurrentWebview } from '@tauri-apps/api/webview';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
-
+import { exit, relaunch } from '@tauri-apps/plugin-process';
 
 // 在应用初始化后添加
 export async function setupTray() {
     const a =  getCurrentWebviewWindow();
     a.onCloseRequested((e) => {
         e.preventDefault();
-        a.hide();
+        try {
+            a.hide(); 
+        }catch(e){
+            console.log(e);
+        }
     })
     const menu = await Menu.new({
         items: [
@@ -25,7 +28,14 @@ export async function setupTray() {
             id: 'quit',
             text: 'Quit',
             action: () => {
-              a.close();
+              exit();
+            },
+          },
+          {
+            id: 'relaunch',
+            text: '重启',
+            action: () => {
+              relaunch();
             },
           },
         ],

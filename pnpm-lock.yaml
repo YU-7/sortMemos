@@ -57,11 +57,14 @@ importers:
         specifier: ~2.3.0
         version: 2.3.0
       '@tauri-apps/plugin-opener':
-        specifier: ^2
+        specifier: ^2.2.6
         version: 2.2.6
       '@tauri-apps/plugin-os':
         specifier: ~2
         version: 2.2.1
+      '@tauri-apps/plugin-process':
+        specifier: ~2
+        version: 2.2.0
       '@tauri-apps/plugin-sql':
         specifier: ^2.2.0
         version: 2.2.0
@@ -104,6 +107,9 @@ importers:
       react-router-dom:
         specifier: '6'
         version: 6.30.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      simple-icons:
+        specifier: ^14.11.1
+        version: 14.11.1
       tailwind-merge:
         specifier: ^3.0.2
         version: 3.0.2
@@ -1168,6 +1174,9 @@ packages:
   '@tauri-apps/plugin-os@2.2.1':
     resolution: {integrity: sha512-cNYpNri2CCc6BaNeB6G/mOtLvg8dFyFQyCUdf2y0K8PIAKGEWdEcu8DECkydU2B+oj4OJihDPD2de5K6cbVl9A==}
 
+  '@tauri-apps/plugin-process@2.2.0':
+    resolution: {integrity: sha512-uypN2Crmyop9z+KRJr3zl71OyVFgTuvHFjsJ0UxxQ/J5212jVa5w4nPEYjIewcn8bUEXacRebwE6F7owgrbhSw==}
+
   '@tauri-apps/plugin-sql@2.2.0':
     resolution: {integrity: sha512-yGdybpaMENe/p6lTXslvDHYNNvD9qB7palaBBF5fJHdYSkwd3vrLiYU9dFfLwUAwnsBylND55EiivWsjhazejA==}
 
@@ -2144,6 +2153,10 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-icons@14.11.1:
+    resolution: {integrity: sha512-x4YmyosK22r+m+VK2ilRlrhJNtuIOgCHvVhUglJAvGIa18PlmQrGDIYGqDzYrqmgWB3yKz8Z1ZMSx/kZQSbLow==}
+    engines: {node: '>=0.12.18'}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -3250,6 +3263,10 @@ snapshots:
       '@tauri-apps/api': 2.3.0
 
   '@tauri-apps/plugin-os@2.2.1':
+    dependencies:
+      '@tauri-apps/api': 2.3.0
+
+  '@tauri-apps/plugin-process@2.2.0':
     dependencies:
       '@tauri-apps/api': 2.3.0
 
@@ -4593,6 +4610,8 @@ snapshots:
   shebang-regex@3.0.0: {}
 
   signal-exit@4.1.0: {}
+
+  simple-icons@14.11.1: {}
 
   source-map-js@1.2.1: {}
 
