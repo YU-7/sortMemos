@@ -1,30 +1,16 @@
-import { useEffect } from 'react';
-import { createContext, useContext, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { todo, todoRepository } from '@/SQLiteClient/TodoRepository';
 
-type TodayCardsContextType = {
-    todayCards: todo[];
-    inboxCards: todo[];
-    loading: boolean;
-    error: Error | null;
-    addInboxCard: (content: string) => Promise<void>;
-    addTodayCard: (content: string) => Promise<void>;
-    refreshTodayCards: () => Promise<void>;
-    refreshInboxCards: () => Promise<void>;
-    updateTodo: (id: number, newData: Partial<todo>) => Promise<void>;
-    moveToToday: (id: number) => Promise<void>;
-    moveToInbox: (id: number) => Promise<void>;
-    delTodo: (id: number) => Promise<void>;
-};
-
-const TodayCardsContext = createContext<TodayCardsContextType>({} as TodayCardsContextType);
-
-export function TodayCardsProvider({ children }: { children: React.ReactNode }) {
+export const useTodoActions = () => {
     const [todayCards, setTodayCards] = useState<todo[]>([]);
     const [inboxCards, setInboxCards] = useState<todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const repo = new todoRepository();
+
+    const handleError = useCallback((err: unknown) => {
+        setError(err instanceof Error ? err : new Error('操作失败'));
+    }, []);
 
     // 新增初始化加载
     useEffect(() => {
@@ -37,6 +23,17 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
             setLoading(true);
             const data = await repo.findTodoList({ isToday: true }, 1, 3);
             setTodayCards(data || []);
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('刷新失败'));
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const refreshInboxCards = useCallback(async () => {
+        try {
+            const data = await repo.findTodoList({ isToday: false }, 1, 3);
+            setInboxCards(data || []);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('刷新失败'));
         } finally {
@@ -64,6 +61,7 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
             setError(err instanceof Error ? err : new Error('添加失败'));
         }
     }, []);
+
     const updateTodo = useCallback(async (id: number, newData: Partial<todo>) => {
         try {
             newData.isToday
@@ -72,17 +70,6 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
             await repo.updateTodoList(id, newData);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('更新失败'));
-        }
-    }, []);
-
-    const refreshInboxCards = useCallback(async () => {
-        try {
-            const data = await repo.findTodoList({ isToday: false }, 1, 3);
-            setInboxCards(data || []);
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error('刷新失败'));
-        } finally {
-            setLoading(false);
         }
     }, []);
 
@@ -155,27 +142,19 @@ export function TodayCardsProvider({ children }: { children: React.ReactNode }) 
             setError(err instanceof Error ? err : new Error('删除失败'));
         }
     }, []);
-
-    return (
-        <TodayCardsContext.Provider
-            value={{
-                todayCards,
-                inboxCards,
-                loading,
-                error,
-                addTodayCard,
-                refreshTodayCards,
-                updateTodo,
-                addInboxCard,
-                refreshInboxCards,
-                moveToToday,
-                moveToInbox,
-                delTodo
-            }}
-        >
-            {children}
-        </TodayCardsContext.Provider>
-    );
-}
-
-export const useTodayCards = () => useContext(TodayCardsContext);
+    
+    return {
+        loading,
+        error,
+        refreshTodayCards,
+        refreshInboxCards,
+        todayCards,
+        inboxCards,
+        addTodayCard,
+        updateTodo,
+        addInboxCard,
+        moveToToday,
+        moveToInbox,
+        delTodo
+    };
+};

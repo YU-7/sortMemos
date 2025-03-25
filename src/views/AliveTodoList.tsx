@@ -1,9 +1,7 @@
-import AliveKanBoard from "@/components/AliveKanBoard"
+import AliveKanBoard from "@/components/AliveTodo/AliveKanBoard"
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DndContext } from '@dnd-kit/core';
-import { useTodayCards } from '@/contexts/cardList';
-import { useState } from 'react';
 
 export default function AliveTodoList() {
      // 在组件顶部添加状态管理

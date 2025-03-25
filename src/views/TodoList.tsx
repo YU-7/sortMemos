@@ -1,7 +1,8 @@
-import KanBoardTool from '@/components/KanBoardTool';
+import KanBoardTool from '@/components/AliveTodo/KanBoardTool';
 import AliveTodoList from './AliveTodoList';
 function TodoList() {
     return (
+        <TodayCardsProvider>
         <div className="flex-1 p-3 overflow-y-auto">
             {/* 修改搜索框区域 */}
             <KanBoardTool></KanBoardTool>
@@ -9,6 +10,7 @@ function TodoList() {
                 <AliveTodoList />
             </div>
         </div>
+        </TodayCardsProvider>
     );
 }
 

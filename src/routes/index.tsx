@@ -3,7 +3,7 @@ import Login from '../views/Login';
 import SignUp from '@/views/SignUp';
 import Home from '../views/Home';
 import TodoList from '@/views/TodoList';
-import ArchiveKanBoard from '@/views/ArchiveKanBoard';
+import ArchiveLayout from '@/views/ArchiveLayout';
 import Setting from '@/views/Setting';
 import RegistryRoute from './RegistryRoute';
 
@@ -17,8 +17,8 @@ export default function RoutesConfig() {
             {/* 受保护路由 */}
             <Route path="/home" element={<Home />}>
                 <Route index element={<TodoList />} />
-                <Route path="todolist" element={<TodoList />} />
-                <Route path="archive-todolist" element={<ArchiveKanBoard />} />
+                <Route path="alive-todolist" element={<TodoList />} />
+                <Route path="archive-todolist" element={<ArchiveLayout />} />
                 <Route path="setting" element={<Setting />} />
             </Route>
         </Routes>

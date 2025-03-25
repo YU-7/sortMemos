@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Home, Bookmark, Settings } from 'lucide-react';
 import { LogOut } from 'lucide-react';
@@ -17,7 +17,7 @@ export default function CollapsibleSidebar() {
 
     // 导航项配置
     const navItems = [
-        { icon: Home, label: 'TODO', url: 'todolist' },
+        { icon: Home, label: 'TODO', url: 'alive-todolist' },
         { icon: Bookmark, label: '模板记', url: 'setting' },
         { icon: Settings, label: '频次记录', url: 'setting' },
         { icon: Settings, label: '软件设置', url: 'setting' }

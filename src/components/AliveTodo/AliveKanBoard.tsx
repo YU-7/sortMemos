@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { MemoCard } from './MemoCard';
 import { useDroppable } from '@dnd-kit/core';
-import { useTodayCards } from '@/contexts/cardList';
+import { useTodayCards } from '@/contexts/AcitiveTodo';
 import { useDndContext } from '@dnd-kit/core';
 import {
     Pagination,

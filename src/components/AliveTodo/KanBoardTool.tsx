@@ -7,7 +7,6 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
-import { useTodayCards } from '@/contexts/cardList';
 
 interface KanBoardToolProps {
     className?: string;
@@ -44,8 +43,11 @@ export default function KanBoardTool({ className }: KanBoardToolProps) {
             </Button>
             <Button className="rounded-full px-4 py-2 whitespace-nowrap">
                 <Plus className="h-4 w-4 mr-2" />
-                <NavLink to="/home/archive-todolist">归档</NavLink>
-                完成/删除
+                <NavLink to="/home/archive-todolist">完成/删除</NavLink>
+            </Button>
+            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
+                <Plus className="h-4 w-4 mr-2" />
+                项目视图
             </Button>
             {/* 共用 Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

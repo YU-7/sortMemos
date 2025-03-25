@@ -2,8 +2,8 @@ import { GripVertical, CalendarPlus, CalendarClock, Trash, SquareCheckBig } from
 import { useDraggable } from '@dnd-kit/core';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { timestampToDate } from '@/toolKit/util';
-import { PriorityBox } from './PriorityBox';
-import { useTodayCards } from '@/contexts/cardList';
+import { PriorityBox } from '../AliveTodo/PriorityBox';
+import { useTodayCards } from '@/contexts/AcitiveTodo';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CardToolKitProps {
