@@ -3,6 +3,7 @@ import Login from '../views/Login';
 import SignUp from '@/views/SignUp';
 import Home from '../views/Home';
 import TodoList from '@/views/TodoList';
+import ArchiveKanBoard from '@/views/ArchiveKanBoard';
 import Setting from '@/views/Setting';
 import RegistryRoute from './RegistryRoute';
 
@@ -17,6 +18,7 @@ export default function RoutesConfig() {
             <Route path="/home" element={<Home />}>
                 <Route index element={<TodoList />} />
                 <Route path="todolist" element={<TodoList />} />
+                <Route path="archive-todolist" element={<ArchiveKanBoard />} />
                 <Route path="setting" element={<Setting />} />
             </Route>
         </Routes>

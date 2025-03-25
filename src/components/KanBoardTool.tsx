@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import {NavLink} from 'react-router-dom'
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
@@ -40,6 +41,11 @@ export default function KanBoardTool({ className }: KanBoardToolProps) {
             <Button className="rounded-full px-4 py-2 whitespace-nowrap" onClick={() => setIsDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 新建待办
+            </Button>
+            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
+                <Plus className="h-4 w-4 mr-2" />
+                <NavLink to="/home/archive-todolist">归档</NavLink>
+                完成/删除
             </Button>
             {/* 共用 Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

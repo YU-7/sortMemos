@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { MemoCard } from './MemoCard';
 import { useDroppable } from '@dnd-kit/core';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTodayCards } from '@/contexts/cardList';
 import { useDndContext } from '@dnd-kit/core';
 import {
@@ -25,7 +23,7 @@ interface InfiniteCardListProps {
 }
 
 // 在组件内部添加拖拽逻辑
-const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, cards, droppableName: id }) => {
+const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, cards, droppableName: id }) => {
     const { active } = useDndContext(); // 新增拖拽状态检测
     const { refreshInboxCards, refreshTodayCards } = useTodayCards();
     const { isOver, setNodeRef } = useDroppable({
@@ -82,4 +80,4 @@ const InfiniteCardList: React.FC<InfiniteCardListProps> = ({ className, title, c
     );
 };
 
-export default InfiniteCardList;
+export default AliveKanBoard;

@@ -32,7 +32,7 @@ export const MemoCard = ({
     }
     return (
         <div ref={setNodeRef} style={style} > 
-                <Card className="relative max-h-[400px] overflow-hidden transition-all duration-300">
+                <Card className="relative max-h-[400px] overflow-hidden transition-all duration-300 bg-green-100">
                     <CardToolKit todo={todo} />
                     <CardHeader>
                         <CardTitle>TODO #{todo.TODO_ID}</CardTitle>
