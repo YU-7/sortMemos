@@ -7,7 +7,7 @@ import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
 import { open } from '@tauri-apps/plugin-dialog';
 import { Copy } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import {setupTray}  from '@/views/SystemTray';
+import {setupTray}  from '@/components/Setting/SystemTray';
 import { SettingItem } from '@/components/Setting/SettingItem';
 import Acknowledgement from '@/components/Setting/Acknowledgement';
 
@@ -30,7 +30,7 @@ function Setting() {
             try {
                 // 并行获取所有系统信息
                 const localeRes = await locale();
-
+                console.log(systemInfo);
                 setSystemInfo({
                     platform: platform(),
                     arch: arch(),

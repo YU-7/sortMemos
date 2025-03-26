@@ -7,10 +7,6 @@ export const useArchiveActions = () => {
     const [error, setError] = useState<Error | null>(null);
     const repo = new todoRepository();
 
-    const handleError = useCallback((err: unknown) => {
-        setError(err instanceof Error ? err : new Error('操作失败'));
-    }, []);
-
     // 新增初始化加载
     useEffect(() => {
         refreshArchivedCards();

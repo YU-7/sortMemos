@@ -8,7 +8,6 @@ import { useDndContext } from '@dnd-kit/core';
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,

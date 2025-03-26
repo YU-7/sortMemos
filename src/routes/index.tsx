@@ -2,9 +2,9 @@ import { Routes, Route } from 'react-router-dom';
 import Login from '../views/Login';
 import SignUp from '@/views/SignUp';
 import Home from '../views/Home';
-import TodoList from '@/views/TodoList';
+import TodoList from '@/views/ActiveLayout';
 import ArchiveLayout from '@/views/ArchiveLayout';
-import Setting from '@/views/Setting';
+import Setting from '@/views/SettingLayout';
 import RegistryRoute from './RegistryRoute';
 
 export default function RoutesConfig() {

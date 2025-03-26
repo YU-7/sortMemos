@@ -9,7 +9,7 @@ export const ArchiveCard = ({ todo }: { todo: todo }) => {
     // 在组件顶部添加 useState
     const [isExpanded, setIsExpanded] = useState(false);
     const [selectedCardData, setSelectedCardData] = useState(todo.content);
-    const { TODO_ID, content } = todo;
+    const { content } = todo;
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     function handleDialogClose() {
