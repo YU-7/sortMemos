@@ -8,7 +8,7 @@ interface ArchiveToolKitProps {
     className?: string;
 }
 
-export default function ArchiveToolKit({ className }: ArchiveToolKitProps) {
+export function ArchiveToolKit({ className }: ArchiveToolKitProps) {
     const [inputValue, setInputValue] = useState('');
 
     return (

@@ -23,7 +23,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ className }) => {
         // 获取表单数据
         const email = emailRef.current?.value || '';
         const password = passwordRef.current?.value || '';
-        navigate('/home', { state: { email: email, password: password } });
+        navigate('/home', { replace:true, state: { email: email, password: password } });
         // 验证用户
     };
 

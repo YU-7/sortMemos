@@ -1,13 +1,14 @@
 import { openUrl } from '@tauri-apps/plugin-opener';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface LinkBannerProps {
-    title: string, 
-    iconPath: string, 
-    url: string,
-    description: string
+    title: string;
+    iconPath: string;
+    url: string;
+    description: string;
 }
 
-export default function LinkBanner({title, description, url, iconPath}: LinkBannerProps) {
+export default function LinkBanner({ title, description, url, iconPath }: LinkBannerProps) {
     const handleOpenLink = async (url: string) => {
         try {
             await openUrl(url);
@@ -17,25 +18,34 @@ export default function LinkBanner({title, description, url, iconPath}: LinkBann
     };
 
     return (
-        <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm w-full">
-            <CustomIcon iconPath={iconPath}/>
-        <div className="flex-1 min-w-0">
-          <div className="space-y-1">
-            <label className="text-sm font-medium">{title}</label>
-            <p className="text-sm font-medium">{description}</p>
-            <span className="text-blue-600 hover:underline cursor-pointer text-sm"
-                        onClick={() => handleOpenLink(url)}>
+        <Card className="w-full">
+            <CardHeader>
+                <CardTitle className="text-lg flex justify-start gap-x-4">
+                    <CustomIcon iconPath={iconPath} color="currentColor" className="w-6 h-6" />
+                    {title}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 text-md text-card-foreground">
+                <div>
+                    <div className="flex-1">{description}</div>
+                    <div 
+                        className="flex-1 hover:text-blue-500 hover:underline cursor-pointer" 
+                        onClick={() => handleOpenLink(url)}
+                    >
                         {url}
-                    </span>
-          </div>
-        </div>
-        
-      </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
     );
 }
 
 // 新增图标组件
-function CustomIcon({ iconPath, color = 'currentColor', className }: { 
+function CustomIcon({
+    iconPath,
+    color = 'currentColor',
+    className
+}: {
     iconPath: string;
     color?: string;
     className?: string;

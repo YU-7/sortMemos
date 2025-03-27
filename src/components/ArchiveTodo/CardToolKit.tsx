@@ -10,7 +10,7 @@ interface CardToolKitProps {
     todo: todo;
 }
 
-export default function CardToolKit({ todo }: CardToolKitProps) {
+export function CardToolKit({ todo }: CardToolKitProps) {
     const { updateTodo, delTodo } = useTodayCards();
     const { attributes, listeners } = useDraggable({
         id: todo && todo.TODO_ID ? todo.TODO_ID : 'default-id',
@@ -24,7 +24,7 @@ export default function CardToolKit({ todo }: CardToolKitProps) {
     }
 
     return (
-        <div className="flex items-center gap-2 px-2 py-2 bg-green-100 rounded-t-lg">
+        <div className="flex items-center gap-2 px-2 py-2 rounded-t-lg">
             {' '}
             {/* 修改 gap-2→gap-3，py-1→py-2 */}
             {/* 拖动手柄 */}

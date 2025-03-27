@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import CollapsibleSidebar from '@/components/CollapsibleSidebar';
 import AuthRoute from '@/routes/AuthRoute';
 
-export default function Home() {
+export default function HomeLayout() {
     return (
         <AuthRoute>
             <div className="flex h-screen bg-gray-100">

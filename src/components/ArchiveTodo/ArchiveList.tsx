@@ -5,7 +5,7 @@ interface ArchiveListProps {
     className?: string; 
 }
 
-export default function ArchiveList(className: ArchiveListProps) {
+export function ArchiveList(className: ArchiveListProps) {
     const {archivedCards} = useArchiveTodo();
     console.log(archivedCards);
     return (

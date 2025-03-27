@@ -13,6 +13,8 @@ export default defineConfig(async () => ({
 			dts: "src/auto-imports.d.ts",
 			dirs: [
 				"src/contexts",
+                "src/lib",
+                "src/types",
 			],
 		}),
     ],

@@ -59,7 +59,7 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
 
             <div className={`flex-1 min-h-0 ${active ? 'overflow-visible' : 'overflow-y-auto'}`}>
                 <div className="space-y-4 p-2">
-                    {cards?.map((item: any) => <MemoCard key={item.TODO_ID} todo={item} />)}
+                    {cards?.map((item: any) => <MemoCard key={item.TODO_ID} todo={item} clsssName='text-card-foreground'/>)}
                 </div>
             </div>
             <Pagination>

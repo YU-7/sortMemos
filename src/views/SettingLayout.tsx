@@ -7,9 +7,7 @@ import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
 import { open } from '@tauri-apps/plugin-dialog';
 import { Copy } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import {setupTray}  from '@/components/Setting/SystemTray';
-import { SettingItem } from '@/components/Setting/SettingItem';
-import Acknowledgement from '@/components/Setting/Acknowledgement';
+import { SettingItem, setupTray, Acknowledgement } from '@/components/Setting';
 
 function Setting() {
     // 移除手动选中的状态管理，改用Tabs组件管理
@@ -53,7 +51,7 @@ function Setting() {
 
     useEffect(() => {
         setupTray();
-    },[])
+    }, []);
     async function openFile() {
         const file = await open({
             multiple: false,
@@ -73,7 +71,7 @@ function Setting() {
 
     // 在组件内添加导航项配置数组
     const navigationItems = [
-        { value: 'autostart', label: '系统设置' },
+        { value: 'autostart', label: '软件基础设置' },
         { value: 'files', label: '文件设置' },
         { value: 'appearance', label: '外观设置' },
         { value: 'advanced', label: '高级设置' },
@@ -81,16 +79,16 @@ function Setting() {
     ];
 
     return (
-        <Tabs defaultValue="autostart" orientation="vertical" className="w-full flex bg-green-200 p-0 m-0 ">
+        <Tabs defaultValue="autostart" orientation="vertical" className="w-full flex p-0 m-0 ">
             {/* 左侧导航 */}
             <TabsList className="w-36 h-auto p-2 bg-white border-r rounded-none shadow-md ">
-                <div className="flex flex-col space-y-3 h-full justify-start">
+                <div className="flex flex-col space-y-2 h-full justify-start">
                     {/* space-y-1 改为 space-y-3 */}
                     {navigationItems.map((item) => (
                         <TabsTrigger
                             key={item.value}
                             value={item.value}
-                            className="w-full justify-start data-[state=active]:bg-gray-100 hover:shadow-sm"
+                            className="w-full justify-start gap-3 text-base px-4 py-4 text-accent-foreground data-[state=active]:bg-gray-100 hover:shadow-sm"
                         >
                             {item.label}
                         </TabsTrigger>
@@ -109,38 +107,25 @@ function Setting() {
                     </SettingItem>
 
                     <SettingItem title="软件信息" description="软件版本号、系统版本号等信息">
-                    <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger>
-                        <Button variant="outline" className="px-4 py-2">
-                            <Copy className="w-4 h-4 mr-2" />
-                        </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {"systemInfo"}
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-                        
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Button variant="outline" className="px-4 py-2">
+                                        <Copy className="w-4 h-4 mr-2" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>{'systemInfo'}</TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                     </SettingItem>
                 </div>
             </TabsContent>
             <TabsContent value="files" className="flex-1 p-8 mt-0">
-                <div className="space-y-6 max-w-2xl">
-                    <div className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm">
-                        <div className="space-y-1">
-                            <label className="text-sm font-medium">默认存储路径</label>
-                            <p className="text-xs text-gray-500">设置文件存储的默认位置</p>
-                        </div>
-                        <Button variant="outline" onClick={openFile} className="px-4 py-2">
-                            选择路径
-                        </Button>
-                    </div>
-                </div>
+                <div className="space-y-6 max-w-2xl"></div>
             </TabsContent>
 
             <TabsContent value="about" className="flex-1 p-8 mt-0">
-                <Acknowledgement/>
+                <Acknowledgement />
             </TabsContent>
         </Tabs>
     );

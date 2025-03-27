@@ -1,5 +1,5 @@
-import KanBoardTool from '@/components/AliveTodo/KanBoardTool';
 import AliveTodoList from './AliveTodoList';
+import { KanBoardTool } from '@/components/AliveTodo';
 function TodoList() {
     return (
         <TodayCardsProvider>

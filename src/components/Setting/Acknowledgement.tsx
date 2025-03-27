@@ -1,9 +1,7 @@
 import LinkBanner from '@/components/Setting/LinkBanner'
 import { siShadcnui, siLucide, siTauri } from "simple-icons/icons";
 
-
-
-export default function Acknowledgement() {
+export function Acknowledgement() {
     // 使用有意义的示例数据
     const linkItems = [
         {

@@ -1,25 +1,22 @@
 import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Home, Bookmark, Settings } from 'lucide-react';
-import { LogOut } from 'lucide-react';
+import { ChevronLeft, ChevronRight, LayoutTemplate, List, LogOut, Settings } from 'lucide-react';
 
 export default function CollapsibleSidebar() {
     const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const navWidth = isCollapsed ? 'w-16' : 'w-36';
     function navTo(url: string) {
-        navigate(`/home/${url}`);
+        navigate(`/home/${url}`, { replace: true });
     }
     function loginOut() {
-        navigate('/');
+        navigate('/', { replace: true });
     }
 
     // 导航项配置
     const navItems = [
-        { icon: Home, label: 'TODO', url: 'alive-todolist' },
-        { icon: Bookmark, label: '模板记', url: 'setting' },
-        { icon: Settings, label: '频次记录', url: 'setting' },
+        { icon: List, label: 'TODO', url: 'alive-todolist' },
+        { icon: LayoutTemplate, label: '模板记', url: 'routine' },
         { icon: Settings, label: '软件设置', url: 'setting' }
     ];
 
@@ -43,10 +40,12 @@ export default function CollapsibleSidebar() {
                             <Button
                                 key={item.label}
                                 variant="ghost"
-                                className={`w-full justify-start gap-3 ${isCollapsed ? 'px-2' : 'px-4'}`}
+                                className={`w-full justify-start gap-3 text-base 
+                                    ${isCollapsed ? 'px-2 py-4' : 'px-4 py-4'} 
+                                    ${location.pathname.includes(item.url) ? 'bg-accent text-accent-foreground' : ''}`}
                                 onClick={() => navTo(item.url)}
                             >
-                                <item.icon className="h-4 w-4 shrink-0" />
+                                <item.icon className="h-5 w-5 shrink-0" />
                                 <span className={`${isCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
                             </Button>
                         ))}

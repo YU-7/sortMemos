@@ -1,16 +1,16 @@
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search } from 'lucide-react';
-import { Plus,SquareKanban,FolderCheck } from 'lucide-react';
+import { Plus, SquareKanban, FolderCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
 
-interface KanBoardToolProps {
+interface RoutineTabProps {
     className?: string;
 }
 
-export function KanBoardTool({ className }: KanBoardToolProps) {
+export function RoutineTab({ className }: RoutineTabProps) {
     const [inputValue, setInputValue] = useState('');
     const { addInboxCard } = useTodayCards();
     const [newTodo, setNewTodo] = useState<string>();
@@ -38,10 +38,6 @@ export function KanBoardTool({ className }: KanBoardToolProps) {
             <Button className="rounded-full px-4 py-2 whitespace-nowrap" onClick={() => setIsDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 新建待办
-            </Button>
-            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
-                <FolderCheck className="h-4 w-4 mr-2" />
-                <NavLink to="/home/archive-todolist">完成/删除</NavLink>
             </Button>
             <Button className="rounded-full px-4 py-2 whitespace-nowrap">
                 <SquareKanban className="h-4 w-4 mr-2" />
