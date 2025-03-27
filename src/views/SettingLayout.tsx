@@ -1,64 +1,18 @@
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { platform, arch, family, version, locale, exeExtension } from '@tauri-apps/plugin-os';
-import { useState, useEffect } from 'react';
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
-import { open } from '@tauri-apps/plugin-dialog';
 import { Copy } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { SettingItem, setupTray, Acknowledgement } from '@/components/Setting';
+import { SettingItem, Acknowledgement, copySysInfo } from '@/components/Setting';
 
 function Setting() {
     // 移除手动选中的状态管理，改用Tabs组件管理
     const [autoStartEnabled, setAutoStartEnabled] = useState(false);
-
-    // 获取所有系统信息的状态
-    const [systemInfo, setSystemInfo] = useState<{
-        platform: string;
-        arch: string;
-        family: string;
-        version: string;
-        exeExtension: string;
-        locale: string;
-    } | null>(null);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // 并行获取所有系统信息
-                const localeRes = await locale();
-                console.log(systemInfo);
-                setSystemInfo({
-                    platform: platform(),
-                    arch: arch(),
-                    family: family(),
-                    version: version(),
-                    exeExtension: exeExtension(),
-                    locale: localeRes?.toString() || ''
-                });
-            } catch (error) {
-                console.error('获取系统信息失败:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
     // 初始化自启动状态
     useEffect(() => {
         isEnabled().then(setAutoStartEnabled);
     }, []);
 
-    useEffect(() => {
-        setupTray();
-    }, []);
-    async function openFile() {
-        const file = await open({
-            multiple: false,
-            directory: false
-        });
-        console.log(file);
-    }
     // 修改切换逻辑
     async function toggleAutoStart(checked: boolean) {
         if (checked) {
@@ -107,16 +61,9 @@ function Setting() {
                     </SettingItem>
 
                     <SettingItem title="软件信息" description="软件版本号、系统版本号等信息">
-                        <TooltipProvider>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Button variant="outline" className="px-4 py-2">
-                                        <Copy className="w-4 h-4 mr-2" />
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>{'systemInfo'}</TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                        <Button variant="outline" className="px-4 py-2" onClick={copySysInfo}>
+                            <Copy className="w-4 h-4 mr-2" />
+                        </Button>
                     </SettingItem>
                 </div>
             </TabsContent>
