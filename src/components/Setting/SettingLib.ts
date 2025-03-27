@@ -1,8 +1,6 @@
 import { platform, arch, family, version, locale, exeExtension } from '@tauri-apps/plugin-os';
-import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
-import { open } from '@tauri-apps/plugin-dialog';
-import { writeText, readText } from '@tauri-apps/plugin-clipboard-manager';
-await writeText('Tauri is awesome!');
+import { open,save } from '@tauri-apps/plugin-dialog';
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
 export async function getSysInfo() {
     const localeRes = await locale();
@@ -26,4 +24,13 @@ export async function openFile() {
 export async function copySysInfo() {
     const sysInfo = await getSysInfo();
     await writeText(JSON.stringify(sysInfo));
+}
+
+export async function saveAppData() {
+    const file = await save({
+        filters: [
+            { name: 'All Files', extensions: ['*'] }
+        ]
+    });
+    console.log(file);
 }

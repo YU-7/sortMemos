@@ -37,6 +37,7 @@
     "sql:allow-execute",
     "log:default",
     "os:allow-locale",
-    "clipboard-manager:allow-write-text"
+    "clipboard-manager:allow-write-text",
+    "dialog:default"
   ]
 }
