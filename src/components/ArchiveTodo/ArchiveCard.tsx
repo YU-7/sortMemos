@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import MDEditor from '@uiw/react-md-editor';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useState } from 'react';
-import {CardToolKit} from './CardToolKit';
+import { CardToolKit } from './CardToolKit';
 import { todo } from '@/SQLiteClient/TodoRepository';
 
 export const ArchiveCard = ({ todo }: { todo: todo }) => {
@@ -18,7 +18,7 @@ export const ArchiveCard = ({ todo }: { todo: todo }) => {
     }
     return (
         <div>
-            <Card className="relative max-h-[400px] overflow-hidden transition-all duration-300">
+            <Card className="relative overflow-hidden transition-all duration-300 w-full">
                 <CardToolKit todo={todo} />
                 <CardHeader>
                     <CardTitle>TODO #{todo.TODO_ID}</CardTitle>

@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { MemoCard } from './MemoCard';
 import { useDroppable } from '@dnd-kit/core';
-import { useTodayCards } from '@/contexts/AcitiveTodo';
 import { useDndContext } from '@dnd-kit/core';
 import {
     Pagination,
@@ -36,13 +35,11 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
         setCurrentPage(currentPage - 1);
         refreshInboxCards();
         refreshTodayCards();
-        console.log('上一页');
     }
     function nextPage() {
         setCurrentPage(currentPage + 1);
         refreshInboxCards();
         refreshTodayCards();
-        console.log('下一页');
     }
     return (
         <div
@@ -59,7 +56,9 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
 
             <div className={`flex-1 min-h-0 ${active ? 'overflow-visible' : 'overflow-y-auto'}`}>
                 <div className="space-y-4 p-2">
-                    {cards?.map((item: any) => <MemoCard key={item.TODO_ID} todo={item} clsssName='text-card-foreground'/>)}
+                    {cards?.map((item: any) => (
+                        <MemoCard key={item.TODO_ID} todo={item} clsssName="text-card-foreground" />
+                    ))}
                 </div>
             </div>
             <Pagination>

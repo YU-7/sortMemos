@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { todo } from '@/SQLiteClient/TodoRepository';
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { SignalHigh, SignalMedium,Siren } from 'lucide-react';
+import { SignalHigh, SignalMedium, Siren } from 'lucide-react';
+
 const priorityArr = [
     {
         value: '1',
@@ -35,13 +36,19 @@ export function PriorityBox({ todo }: PriorityBoxProps) {
     const [iOpen, setiOpen] = React.useState(false);
     const [pValue, setpValue] = React.useState(todo.priority?.toString() || '');
     const [iValue, setiValue] = React.useState(todo.priority?.toString() || '');
+    const { updateTodo } = useTodayCards();
 
     return (
         <div className="flex gap-2">
             {/* 优先级 */}
             <Popover open={pOpen} onOpenChange={setpOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" role="combobox" aria-expanded={pOpen} className="w-[70px] justify-between">
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={pOpen}
+                        className="w-[70px] justify-between"
+                    >
                         <ChevronsUpDown className="opacity-50" />
                         {pValue == '1' && <Siren className="h-5 w-5 text-red-500" />}
                         {pValue == '2' && <SignalMedium className="h-5 w-5 text-yellow-500" />}
@@ -57,6 +64,7 @@ export function PriorityBox({ todo }: PriorityBoxProps) {
                                         value={framework.value}
                                         onSelect={(currentValue) => {
                                             setpValue(currentValue === pValue ? '' : currentValue);
+                                            updateTodo(todo.TODO_ID || 0, { priority: Number(pValue) });
                                             setpOpen(false);
                                         }}
                                     >
@@ -79,11 +87,15 @@ export function PriorityBox({ todo }: PriorityBoxProps) {
             {/* 紧急程度 */}
             <Popover open={iOpen} onOpenChange={setiOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" role="combobox" aria-expanded={pOpen} className="w-[70px] justify-between">
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={pOpen}
+                        className="w-[70px] justify-between"
+                    >
                         <ChevronsUpDown className="opacity-50" />
                         {iValue == 'true' && <SignalHigh className="h-5 w-5 text-red-500" />}
                         {iValue == 'false' && <SignalMedium className="h-5 w-5 text-yellow-500" />}
-                        
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[150px] p-0">
@@ -107,8 +119,9 @@ export function PriorityBox({ todo }: PriorityBoxProps) {
                                             )}
                                         />
                                         {framework.value == 'true' && <SignalHigh className="h-5 w-5 text-red-500" />}
-                                        {framework.value == 'false' && <SignalMedium className="h-5 w-5 text-yellow-500" />}
-                            
+                                        {framework.value == 'false' && (
+                                            <SignalMedium className="h-5 w-5 text-yellow-500" />
+                                        )}
                                     </CommandItem>
                                 ))}
                             </CommandGroup>

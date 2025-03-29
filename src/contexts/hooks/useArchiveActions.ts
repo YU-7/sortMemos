@@ -15,7 +15,7 @@ export const useArchiveActions = () => {
     const refreshArchivedCards = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await repo.findTodoList({ isToday: true }, 1, 3);
+            const data = await repo.findTodoList({ isCompleted: true, isDeleted: true }, 1, 3);
             setArchivedCards(data || []);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('刷新失败'));
@@ -44,13 +44,11 @@ export const useArchiveActions = () => {
         }
     }, []);
 
-
-    
     return {
         loading,
         error,
         archivedCards,
         refreshArchivedCards,
-        moveToActiveTodo,
+        moveToActiveTodo
     };
 };
