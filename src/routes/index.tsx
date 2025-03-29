@@ -5,6 +5,7 @@ import TodoList from '@/views/ActiveLayout';
 import ArchiveLayout from '@/views/ArchiveLayout';
 import RouRoutineLayout from '@/views/RoutineLayout';
 import Setting from '@/views/SettingLayout';
+import FrequenyTrackLayout from '@/views/FrequenyTrackLayout';
 import RegistryRoute from './RegistryRoute';
 
 export default function RoutesConfig() {
@@ -20,6 +21,7 @@ export default function RoutesConfig() {
                 <Route path="alive-todolist" element={<TodoList />} />
                 <Route path="archive-todolist" element={<ArchiveLayout />} />
                 <Route path="routine" element={<RouRoutineLayout />} />
+                <Route path="frequeny" element={<FrequenyTrackLayout />} />
                 <Route path="setting" element={<Setting />} />
             </Route>
         </Routes>

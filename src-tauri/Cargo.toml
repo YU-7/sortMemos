@@ -28,6 +28,7 @@ tauri-plugin-os = "2"
 tauri-plugin-process = "2"
 tauri-plugin-clipboard-manager = "2"
 tauri-plugin-dialog = "2"
+tauri-plugin-store = "2"
 [dependencies.tauri-plugin-sql]
 features = ["sqlite"] # or "postgres", or "mysql"
 version = "2"

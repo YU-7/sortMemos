@@ -17,6 +17,7 @@ export default function CollapsibleSidebar() {
     const navItems = [
         { icon: List, label: 'TODO', url: 'alive-todolist' },
         { icon: LayoutTemplate, label: '模板记', url: 'routine' },
+        { icon: LayoutTemplate, label: '频率追踪', url: 'frequeny' },
         { icon: Settings, label: '软件设置', url: 'setting' }
     ];
 

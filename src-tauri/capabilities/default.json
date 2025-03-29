@@ -13,6 +13,8 @@
     "core:webview:allow-webview-hide",
     "core:default",
     "opener:default",
+    "store:default",
+    "store:allow-load",
     {
       "identifier": "http:default",
       "allow": [

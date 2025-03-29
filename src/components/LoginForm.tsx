@@ -2,10 +2,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Checkbox } from './ui/checkbox';
-import { useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { useRef } from 'react';
-
+import { getUserInfo } from '@/lib/StroreLib';
 interface LoginFormProps {
     className?: string;
 }
@@ -15,15 +12,28 @@ const LoginForm: React.FC<LoginFormProps> = ({ className }) => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const rememberRef = useRef<HTMLButtonElement>(null);
-    const navToSignUp = () => {
-        navigate('/signup');
-    };
+    useEffect(() => {
+        const verifyLogin = async () => {
+            try {
+                const userInfo = await getUserInfo();
+                if (userInfo) {
+                    if (emailRef.current && passwordRef.current) {
+                        emailRef.current.value = userInfo.email;
+                        passwordRef.current.value = userInfo.password;
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+            }
+        };
+        verifyLogin();
+    }, []); // 空依赖数组：仅在组件挂载时执行一次
     // 验证用户
     const vertifyUser = () => {
         // 获取表单数据
         const email = emailRef.current?.value || '';
         const password = passwordRef.current?.value || '';
-        navigate('/home', { replace:true, state: { email: email, password: password } });
+        navigate('/home', { replace: true, state: { email: email, password: password } });
         // 验证用户
     };
 
@@ -47,9 +57,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ className }) => {
                         <Checkbox id="remember" ref={rememberRef} />
                         <Label htmlFor="remember">记住我</Label>
                     </div>
-                    <Button variant="link" className="px-0 text-sm" onClick={navToSignUp}>
-                        切换到注册
-                    </Button>
+                    <Link to="/signup">
+                        <Button variant="link" className="px-0 text-sm">
+                            切换到注册
+                        </Button>
+                    </Link>
                 </div>
                 <Button
                     className="w-full"

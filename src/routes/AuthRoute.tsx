@@ -2,6 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { ReactNode, useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UserRepository } from '@/SQLiteClient/UserRepository';
+import { saveUserInfo } from '@/lib/StroreLib';
 
 export default function AuthRoute({ children }: { children: ReactNode }) {
     const location = useLocation();
@@ -13,6 +14,9 @@ export default function AuthRoute({ children }: { children: ReactNode }) {
             try {
                 const repo = new UserRepository();
                 const isValid = await repo.vertifyUser(email, password); // 调用异步验证
+                if (isValid) {
+                    saveUserInfo(email, password); // 保存用户信息到本地
+                }
                 setIsLogined(isValid);
             } catch (error) {
                 setIsLogined(false);
