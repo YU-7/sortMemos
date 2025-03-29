@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart';
 import { Copy } from 'lucide-react';
-import { SettingItem, Acknowledgement, copySysInfo, openFile,saveAppData } from '@/components/Setting';
+import { SettingItem, Acknowledgement, copySysInfo, saveAppData } from '@/components/Setting';
 
 function Setting() {
     // 移除手动选中的状态管理，改用Tabs组件管理
@@ -69,7 +69,7 @@ function Setting() {
             </TabsContent>
             <TabsContent value="files" className="flex-1 p-8 mt-0">
                 <div className="space-y-6 max-w-2xl">
-                <SettingItem title="开机自启动" description="应用将在系统启动时自动运行">
+                    <SettingItem title="开机自启动" description="应用将在系统启动时自动运行">
                         <Button id="auto-start-switch" onClick={saveAppData}>
                             <Copy className="w-4 h-4 mr-2" />
                         </Button>
