@@ -3,9 +3,14 @@ import { Menu } from '@tauri-apps/api/menu';
 import { defaultWindowIcon } from '@tauri-apps/api/app';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { exit, relaunch } from '@tauri-apps/plugin-process';
+import {getSysInfo} from './SettingLib';
 
 // 在应用初始化后添加
 export async function setupTray() {
+    const sysInfo = await getSysInfo();
+    if (sysInfo.platform === 'android') {
+        return;
+    }
     const a = getCurrentWebviewWindow();
     a.onCloseRequested((e) => {
         e.preventDefault();

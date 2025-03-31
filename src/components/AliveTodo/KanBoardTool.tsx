@@ -21,32 +21,44 @@ export function KanBoardTool({ className }: KanBoardToolProps) {
         setIsDialogOpen(false);
     }
     return (
-        <div className={cn('h-[10%] flex items-center gap-4 px-4', className)}>
-            <div className="flex-1 max-w-2xl">
+        <div className={cn('h-[10%] flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-4', className)}>
+            {/* 搜索框 - 小屏幕下全宽 */}
+            <div className="w-full sm:flex-1 sm:max-w-2xl">
                 <div className="relative">
                     <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
                     <Input
                         type="search"
                         placeholder="搜索待办事项..."
-                        className="pl-8 pr-4 py-2 rounded-full shadow-sm"
+                        className=" pl-8 pr-4 py-2 rounded-full shadow-sm"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                     />
                 </div>
             </div>
-            {/* 新增按钮 */}
-            <Button className="rounded-full px-4 py-2 whitespace-nowrap" onClick={() => setIsDialogOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                新建待办
-            </Button>
-            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
-                <FolderCheck className="h-4 w-4 mr-2" />
-                <NavLink to="/home/archive-todolist">完成/删除</NavLink>
-            </Button>
-            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
-                <SquareKanban className="h-4 w-4 mr-2" />
-                项目视图
-            </Button>
+            {/* 按钮组 - 小屏幕下自动换行 */}
+            <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <Button className="rounded-full px-4 py-2 whitespace-nowrap flex-1 sm:flex-initial" 
+                    onClick={() => setIsDialogOpen(true)}>
+                    <Plus className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">新建待办</span>
+                </Button>
+
+                {/* 完成/删除按钮 */}
+                <NavLink 
+                  to="/home/archive-todolist" 
+                  className="flex-1 sm:flex-initial [&.active]:bg-accent"
+                >
+                  <Button className="w-full rounded-full px-4 py-2 whitespace-nowrap">
+                    <FolderCheck className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">完成/删除</span>
+                  </Button>
+                </NavLink>
+
+                <Button className="rounded-full px-4 py-2 whitespace-nowrap flex-1 sm:flex-initial">
+                    <SquareKanban className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">项目视图</span>
+                </Button>
+            </div>
             {/* 共用 Dialog */}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="max-w-4xl w-[80%] h-[80vh]">

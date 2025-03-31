@@ -25,7 +25,7 @@ export default function AliveTodoList() {
                     cards={inboxCards}
                     droppableName="inbox"
                     title="收件箱"
-                    className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-0'}`}
+                    className={`transition-all duration-300 ${isExpanded ? 'max-sm:basis-full md:basis-1/2' : 'basis-hidden'}`}
                 />
             )}
             {/* 折叠按钮（带悬停动画） */}
@@ -45,7 +45,11 @@ export default function AliveTodoList() {
                 droppableName="today"
                 title="今日待办"
                 cards={todayCards}
-                className={`transition-all duration-300 ${isExpanded ? 'basis-1/2 min-w-0' : 'basis-full'}`}
+                className={`transition-all duration-300 ${
+                    isExpanded 
+                    ? 'max-sm:hidden md:basis-1/2'  // 修改这里
+                    : 'basis-full'
+                }`}
             />
         </DndContext>
     );
