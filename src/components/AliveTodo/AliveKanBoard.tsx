@@ -44,8 +44,8 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
     return (
         <div
             className={cn(
-                'ms:p-3 ms:m-1 ms:rounded-md ms:border flex flex-col',
-                'max-ms:border-t-2',
+                'sm:p-2 sm:m-1 rounded-md sm:border flex flex-col',
+                'max-sm:border-t-2',
                 className,
                 isOver && 'bg-blue-50 border-blue-200' // 新增拖拽状态类
             )}
