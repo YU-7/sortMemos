@@ -8,6 +8,7 @@ export {}
 declare global {
   const ArchiveTodoProvider: typeof import('./contexts/ArchiveTodo')['ArchiveTodoProvider']
   const Link: typeof import('react-router-dom')['Link']
+  const MobilePlatform: typeof import('./lib/GlobalConst')['MobilePlatform']
   const NavLink: typeof import('react-router-dom')['NavLink']
   const Navigate: typeof import('react-router-dom')['Navigate']
   const Outlet: typeof import('react-router-dom')['Outlet']
@@ -21,6 +22,7 @@ declare global {
   const lazy: typeof import('react')['lazy']
   const memo: typeof import('react')['memo']
   const saveUserInfo: typeof import('./lib/StroreLib')['saveUserInfo']
+  const sendANotification: typeof import('./lib/Notification')['sendANotification']
   const startTransition: typeof import('react')['startTransition']
   const useArchiveTodo: typeof import('./contexts/ArchiveTodo')['useArchiveTodo']
   const useCallback: typeof import('react')['useCallback']

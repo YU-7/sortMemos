@@ -40,6 +40,7 @@
     "log:default",
     "os:allow-locale",
     "clipboard-manager:allow-write-text",
-    "dialog:default"
+    "dialog:default",
+    "notification:default"
   ]
 }
