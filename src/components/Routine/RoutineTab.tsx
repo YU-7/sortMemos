@@ -5,6 +5,7 @@ import { Plus, SquareKanban } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import MDEditor from '@uiw/react-md-editor';
+import { sendANotification } from '@/lib/Notification';
 
 interface RoutineTabProps {
     className?: string;
@@ -39,7 +40,7 @@ export function RoutineTab({ className }: RoutineTabProps) {
                 <Plus className="h-4 w-4 mr-2" />
                 新建待办
             </Button>
-            <Button className="rounded-full px-4 py-2 whitespace-nowrap">
+            <Button className="rounded-full px-4 py-2 whitespace-nowrap" onClick={sendANotification}>
                 <SquareKanban className="h-4 w-4 mr-2" />
                 项目视图
             </Button>

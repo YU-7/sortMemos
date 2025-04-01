@@ -23,7 +23,7 @@ export default function CardToolKit({ todo }: CardToolKitProps) {
     }
 
     return (
-        <div className="flex items-center gap-2 px-2 py-2 rounded-t-lg">
+        <div className={cn('flex items-center gap-2 px-2 py-2 rounded-t-lg', 'max-full box-border')}>
             {' '}
             {/* 修改 gap-2→gap-3，py-1→py-2 */}
             {/* 拖动手柄 */}

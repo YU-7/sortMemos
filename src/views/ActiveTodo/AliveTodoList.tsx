@@ -6,7 +6,7 @@ import { DndContext } from '@dnd-kit/core';
 export default function AliveTodoList() {
     // 在组件顶部添加状态管理
     const { todayCards, inboxCards, moveToToday, moveToInbox } = useTodayCards();
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
     // 为参数添加类型注解
     function handleDragEnd(event: any) {
         const { active, over, collisions } = event;
@@ -25,14 +25,14 @@ export default function AliveTodoList() {
                     cards={inboxCards}
                     droppableName="inbox"
                     title="收件箱"
-                    className={`transition-all duration-300 ${isExpanded ? 'max-sm:basis-full md:basis-1/2' : 'basis-hidden'}`}
+                    className={`transition-all duration-300 ${isExpanded ? 'max-sm:basis-full sm:basis-1/2' : 'basis-hidden'}`}
                 />
             )}
             {/* 折叠按钮（带悬停动画） */}
             <Button
                 onClick={() => setIsExpanded(!isExpanded)}
                 variant={'ghost'}
-                className="absolute top-1/2 -translate-y-1/2 border rounded-lg p-1 z-10 hover:scale-110 transition-transform py-10"
+                className="absolute top-1/2 -translate-y-1/2 border rounded-lg p-1 z-10 hover:scale-110 transition-transform py-10 max-sm:hidden"
                 style={{
                     left: isExpanded ? 'calc(50% - 13px)' : '7px' // 动态位置
                 }}

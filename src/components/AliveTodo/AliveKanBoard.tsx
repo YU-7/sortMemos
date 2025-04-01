@@ -44,7 +44,8 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
     return (
         <div
             className={cn(
-                'basis-2/5 p-3 m-1 rounded-md border flex flex-col',
+                'ms:p-3 ms:m-1 ms:rounded-md ms:border flex flex-col',
+                'max-ms:border-t-2',
                 className,
                 isOver && 'bg-blue-50 border-blue-200' // 新增拖拽状态类
             )}
@@ -55,7 +56,7 @@ const AliveKanBoard: React.FC<InfiniteCardListProps> = ({ className, title, card
             <h2 className="text-xl font-bold mb-4 ml-2 text-card-foreground">{title || '待办事项列表'}</h2>
 
             <div className={`flex-1 min-h-0 ${active ? 'overflow-visible' : 'overflow-y-auto'}`}>
-                <div className="space-y-4 p-2">
+                <div className="ms:space-y-4 p-2">
                     {cards?.map((item: any) => (
                         <MemoCard key={item.TODO_ID} todo={item} clsssName="text-card-foreground" />
                     ))}

@@ -8,9 +8,10 @@ import {getSysInfo} from './SettingLib';
 // 在应用初始化后添加
 export async function setupTray() {
     const sysInfo = await getSysInfo();
-    if (sysInfo.platform === 'android') {
+    if (MobilePlatform.includes(sysInfo.platform)) {
         return;
     }
+    console.log(MobilePlatform);
     const a = getCurrentWebviewWindow();
     a.onCloseRequested((e) => {
         e.preventDefault();
